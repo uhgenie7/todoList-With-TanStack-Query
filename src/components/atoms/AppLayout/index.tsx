@@ -10,7 +10,7 @@ const AppLayout = ({ children }: IProps) => {
 export default AppLayout;
 
 const Container = styled.div`
-  height: 100vh;
+  padding: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
