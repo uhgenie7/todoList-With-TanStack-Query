@@ -13,9 +13,10 @@ import { Suspense } from 'react';
 interface ITodos {
   title: string;
   content: string;
+  refetch: any;
 }
 
-const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
+const Todo = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) => {
   const toast = showToast();
   const router = useRouter();
   const { query } = useRouter();
@@ -59,6 +60,7 @@ const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
   const { mutate: onUpdate } = useMutation(() => updateTodoAPI(id, todo), {
     onSuccess: (res) => {
       toast.success('등록되었습니다');
+      refetch();
       handleReadOnly();
       console.log(res);
     },
@@ -66,6 +68,7 @@ const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
 
   const { mutate: onDelete } = useMutation(() => deleteTodoAPI(id), {
     onSuccess: (res) => {
+      refetch();
       console.log(res);
     },
   });

@@ -1,19 +1,16 @@
 import { useState, useCallback, ChangeEvent } from 'react';
-import { useQuery, QueryClient, dehydrate, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import InputForm from './InputForm';
 import { createTodoAPI } from '@src/apis/todos';
-import showToast from '@src/libs/common';
 
 interface ITodos {
   title: string;
   content: string;
 }
 
-const TodoForm = ({ ...props }) => {
-  const toast = showToast();
-
+const TodoForm = ({ refetch, ...props }) => {
   const [todo, setTodo] = useState<ITodos>({
     title: '',
     content: '',
@@ -51,6 +48,7 @@ const TodoForm = ({ ...props }) => {
 
   const { mutate: addTodo } = useMutation(() => createTodoAPI(todo), {
     onSuccess: (res) => {
+      refetch();
       console.log(res);
     },
   });

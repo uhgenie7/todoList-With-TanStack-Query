@@ -1,4 +1,3 @@
-import TodoForm from '../molecules/TodoForm';
 import TodoList from '../molecules/TodoList';
 import styled from 'styled-components';
 import { ITodoArr } from '@src/types';
@@ -6,7 +5,6 @@ import { ITodoArr } from '@src/types';
 const Todos = ({ todos }: ITodoArr) => {
   return (
     <Container>
-      <TodoForm />
       <div className="row">
         <section>
           <h2>목록</h2>
