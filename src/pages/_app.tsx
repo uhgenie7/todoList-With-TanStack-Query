@@ -6,7 +6,17 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(new QueryClient());
+  const [queryClient] = useState(
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          retry: false,
+        },
+      },
+    }),
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
