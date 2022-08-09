@@ -18,6 +18,10 @@ const Button = ({ buttonValue, isCorrect, onClick, ...props }: IProps) => {
 export default Button;
 
 const ButtonWrapper = styled.button<{ isCorrect: boolean }>`
-  background: ${({ isCorrect }) => (isCorrect ? 'skyblue' : 'gray')};
-  color: ${({ isCorrect }) => (isCorrect ? 'gray' : 'skyblue')};
+  font-size: 1em;
+  font-weight: bold;
+  width: 300px;
+  padding: 1rem;
+  background: ${({ isCorrect }) => (isCorrect ? 'var(--main)' : 'var(--snow)')};
+  color: ${({ isCorrect }) => (isCorrect ? 'black' : 'black')};
 `;
