@@ -1,8 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import variables from './variables';
 
 const GlobalStyle = createGlobalStyle`
   ${reset};
+  ${variables};
   
   html,
   body {
@@ -34,6 +36,21 @@ const GlobalStyle = createGlobalStyle`
   a, a:visited {
     text-decoration: none;
     color: black;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    padding: 2rem 0;
+
+  }
+
+  p {
+    line-height: 1.5;
+    word-break: keep-all;
   }
 `;
 
