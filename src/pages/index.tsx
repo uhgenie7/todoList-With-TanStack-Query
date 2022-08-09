@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import showToast from '@src/libs/common';
-import { Suspense } from 'react';
 import AppLayout from '@src/components/atoms/AppLayout';
+import Todos from '@src/components/organism/Todos';
+import { getTodosAPI } from '@src/apis/todos';
+import { ITodoArr } from '@src/types';
+import { Suspense } from 'react';
 
-const Home: NextPage = () => {
+const Home = ({ todos }: ITodoArr) => {
   const toast = showToast();
   const router = useRouter();
   useEffect(() => {
@@ -15,6 +17,7 @@ const Home: NextPage = () => {
       router.push('/auth');
     }
   }, []);
+
   return (
     <div>
       <Head>
@@ -22,9 +25,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
-        <Suspense fallback={`loading`}>
-          <h1>Home</h1>
-          <p>여기는 루트입니다</p>
+        <Suspense fallback="loading">
+          <Todos todos={todos} />
         </Suspense>
       </AppLayout>
     </div>
@@ -32,3 +34,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async () => {
+  const {
+    data: { data: todos },
+  } = await getTodosAPI();
+
+  return {
+    props: { todos },
+  };
+};
