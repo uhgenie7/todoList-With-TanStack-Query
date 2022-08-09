@@ -2,7 +2,7 @@ import { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
-  labelFor: string;
+  labelFor?: string;
 }
 
 const Input = ({ labelFor, ...props }: IProps) => {
