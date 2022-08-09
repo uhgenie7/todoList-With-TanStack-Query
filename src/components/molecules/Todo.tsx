@@ -8,11 +8,13 @@ import styled from 'styled-components';
 import { deleteTodoAPI, updateTodoAPI } from '@src/apis/todos';
 import showToast from '@src/libs/common';
 import TodoById from '@src/components/atoms/TodoById';
+import { Suspense } from 'react';
 
 interface ITodos {
   title: string;
   content: string;
 }
+
 const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
   const toast = showToast();
   const router = useRouter();
@@ -20,7 +22,7 @@ const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
 
   const [readOnly, setReadOnly] = useState(true);
 
-  const [todo, setTodo] = useState<ITodos>({
+  const [todo, setTodo] = useState({
     title: title,
     content: content,
   });
@@ -48,7 +50,6 @@ const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
   );
 
   const handleTodoById = useCallback(() => {
-    // history.pushState(null, null, `/${id}`);
     router.push(`/${id}`);
   }, []);
 
@@ -107,7 +108,11 @@ const Todo = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
           {!readOnly && <ButtonWrapper isDanger={false} buttonValue="취소" isCorrect={true} onClick={cancelTodo} />}
         </div>
       </Container>
-      {id === query.id && <TodoById />}
+      {id === query.id && (
+        <Suspense fallback={<div>loading</div>}>
+          <TodoById />
+        </Suspense>
+      )}
     </>
   );
 };
