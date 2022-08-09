@@ -1,4 +1,5 @@
 import { InputHTMLAttributes } from 'react';
+import styled from 'styled-components';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   labelFor: string;
@@ -7,8 +8,14 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = ({ labelFor, ...props }: IProps) => {
   return (
     <>
-      <input id={labelFor} {...props} />
+      <Container id={labelFor} {...props} />
     </>
   );
 };
 export default Input;
+
+const Container = styled.input`
+  padding: 0.5rem;
+  outline: none;
+  border: 1px solid var(--main);
+`;
