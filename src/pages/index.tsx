@@ -25,7 +25,7 @@ const Home = ({ todos }: ITodoArr) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout>
-        <Suspense fallback="loading">
+        <Suspense fallback={<div>loading</div>}>
           <Todos todos={todos} />
         </Suspense>
       </AppLayout>
