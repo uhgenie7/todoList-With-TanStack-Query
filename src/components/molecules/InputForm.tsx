@@ -7,8 +7,8 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   labelFor: string;
   labelValue: string;
   value: string;
-  isError: boolean;
-  errorMessage: string;
+  isError?: boolean;
+  errorMessage?: string;
 }
 
 const InputForm = ({ labelFor, labelValue, errorMessage, isError, ...props }: IProps) => {
