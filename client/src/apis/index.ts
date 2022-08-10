@@ -1,45 +1,40 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import showToast from '@src/libs/common';
-const ISSERVER = typeof window === 'undefined';
-interface IRequestError {
-  details: string;
-}
+import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios';
+import { IResponse } from '@src/types/api';
 
-export const instance = axios.create({
+const ISSERVER = typeof window === 'undefined';
+
+export const instance: AxiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
-  validateStatus: function (status) {
-    return status < 500;
-  },
 });
 
-export const instanceAuth = axios.create({
+export const instanceAuth: AxiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
     Authorization: !ISSERVER && `Bearer ${localStorage.getItem('token')}`,
   },
-  validateStatus: function (status) {
-    return status < 500;
-  },
 });
 
-const responseError = (res: AxiosResponse) => {
-  const toast = showToast();
-  const code = res.status;
-  const message = res.data.details;
-  switch (code) {
-    case 400:
-      return toast.error(message);
-    case 409:
-      return toast.error(message);
-    default:
-      return res;
-  }
+const onResponse = (response: AxiosResponse): AxiosResponse => {
+  return response.data;
 };
 
-instance.interceptors.response.use(responseError, (error: AxiosError<IRequestError>) => {
-  return Promise.reject(error.response);
-});
+const onResponseError = (error: AxiosError<IResponse>): Promise<AxiosError> => {
+  const response = error.response;
+  const status = response?.status;
+  switch (status) {
+    case 400:
+      throw response;
+    case 409:
+      throw response;
+  }
 
-instanceAuth.interceptors.response.use(responseError, (error: AxiosError<IRequestError>) => {
   return Promise.reject(error.response);
-});
+};
+
+export function setupInterceptorsTo(axiosInstance: AxiosInstance): AxiosInstance {
+  axiosInstance.interceptors.response.use(onResponse, onResponseError);
+  return axiosInstance;
+}
+
+setupInterceptorsTo(instance);
+setupInterceptorsTo(instanceAuth);
