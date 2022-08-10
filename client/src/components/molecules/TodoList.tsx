@@ -7,9 +7,7 @@ import styled from 'styled-components';
 
 const TodoList = () => {
   const {
-    data: {
-      data: { data: freshTodos },
-    },
+    data: { data: freshTodos },
     refetch,
   } = useQuery(QueryKeys.TODOS, getTodosAPI, {
     suspense: true,
