@@ -6,7 +6,7 @@ const SignUp = () => {
   return (
     <AppLayout>
       <h2>회원가입</h2>
-      <AuthForm buttonValue="회원가입" handleAPI={signUpAPI} />
+      <AuthForm buttonValue="회원가입" handleLoginAPI={signUpAPI} />
     </AppLayout>
   );
 };

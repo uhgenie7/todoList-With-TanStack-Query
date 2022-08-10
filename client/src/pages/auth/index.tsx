@@ -20,7 +20,7 @@ const Auth = () => {
     <Container>
       <h2>로그인</h2>
       <div className="center">
-        <AuthForm buttonValue="로그인" handleAPI={loginAPI} />
+        <AuthForm buttonValue="로그인" handleLoginAPI={loginAPI} />
         <Button isCorrect={true} buttonValue="회원가입" onClick={handleNavigateSignUp} />
       </div>
     </Container>
