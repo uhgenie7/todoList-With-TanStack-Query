@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import showToast from '@src/libs/common';
-import { IAuthResponse } from '@src/types/api';
+import { IAuthResponse } from '@src/types/response';
 
 interface IFormProps {
   buttonValue: string;

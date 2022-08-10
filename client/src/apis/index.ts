@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios';
-import { IResponse } from '@src/types/api';
+import { IResponse } from '@src/types/response';
 
 const ISSERVER = typeof window === 'undefined';
 
