@@ -68,6 +68,7 @@ const Todo = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) => {
 
   const { mutate: onDelete } = useMutation(() => deleteTodoAPI(id), {
     onSuccess: (res) => {
+      toast.success('삭제되었습니다');
       refetch();
       console.log(res);
     },

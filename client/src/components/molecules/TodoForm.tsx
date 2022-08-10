@@ -4,6 +4,7 @@ import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import InputForm from './InputForm';
 import { createTodoAPI } from '@src/apis/todos';
+import showToast from '@src/libs/common';
 
 interface ITodos {
   title: string;
@@ -11,6 +12,7 @@ interface ITodos {
 }
 
 const TodoForm = ({ refetch, ...props }) => {
+  const toast = showToast();
   const [todo, setTodo] = useState<ITodos>({
     title: '',
     content: '',
@@ -48,6 +50,7 @@ const TodoForm = ({ refetch, ...props }) => {
 
   const { mutate: addTodo } = useMutation(() => createTodoAPI(todo), {
     onSuccess: (res) => {
+      toast.success('추가되었습니다.');
       refetch();
       console.log(res);
     },

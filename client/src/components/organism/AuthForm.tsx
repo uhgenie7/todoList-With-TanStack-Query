@@ -4,14 +4,19 @@ import InputForm from '../molecules/InputForm';
 import Button from '@src/components/atoms/Button';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { useMutation } from '@tanstack/react-query';
+import showToast from '@src/libs/common';
+import { IAuthResponse } from '@src/types/api';
 
 interface IFormProps {
   buttonValue: string;
-  handleAPI: any;
+  handleLoginAPI: any;
 }
 
-const AuthForm = ({ buttonValue, handleAPI }: IFormProps) => {
+const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
   const router = useRouter();
+
+  const toast = showToast();
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');
@@ -52,14 +57,28 @@ const AuthForm = ({ buttonValue, handleAPI }: IFormProps) => {
     isEmail && isPassword ? setIsCorrect(true) : setIsCorrect(false);
   }, [email, password]);
 
-  const onClickPostAPI = useCallback(async () => {
-    const res = await handleAPI({ email, password });
-    if (res.status === 200) {
-      router.push('/');
-    } else {
-      router.push('/auth');
-    }
-  }, [email, password]);
+  // const onClickPostAPI = useCallback(async () => {
+  //   const res = await handleLoginAPI({ email, password });
+  //   if (res.status === 200) {
+  //     router.push('/');
+  //   } else {
+  //     router.push('/auth');
+  //   }
+  // }, [email, password]);
+
+  const { mutate: onSignUp } = useMutation(() => handleLoginAPI({ email, password }), {
+    onSuccess: async (res: IAuthResponse) => {
+      if (res.status === 400 || res.status === 409) {
+        toast.error(res.data.details);
+      } else {
+        toast.success(res.message);
+        router.push('/');
+      }
+    },
+    onError: async (error) => {
+      console.log(error);
+    },
+  });
 
   return (
     <Container>
@@ -88,7 +107,7 @@ const AuthForm = ({ buttonValue, handleAPI }: IFormProps) => {
             errorMessage={'8자리 이상 입력해주세요'}
           />
         </div>
-        <ButtonWrapper isCorrect={isCorrect} buttonValue={buttonValue} onClick={onClickPostAPI} />
+        <ButtonWrapper isCorrect={isCorrect} buttonValue={buttonValue} onClick={onSignUp} />
       </div>
     </Container>
   );
