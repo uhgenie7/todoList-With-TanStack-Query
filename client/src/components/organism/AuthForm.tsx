@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
+import { useRecoilState } from 'recoil';
+import { isLoginState } from '@src/states/loginState';
 import InputForm from '../molecules/InputForm';
 import Button from '@src/components/atoms/Button';
 import { useRouter } from 'next/router';
@@ -15,6 +17,7 @@ interface IFormProps {
 
 const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
 
   const toast = showToast();
   const [email, setEmail] = useState('');
@@ -72,6 +75,7 @@ const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
         toast.error(res.data.details);
       } else {
         toast.success(res.message);
+        setIsLoggedIn(true);
         router.push('/');
       }
     },
