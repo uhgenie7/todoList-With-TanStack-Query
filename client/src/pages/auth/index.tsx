@@ -4,14 +4,13 @@ import AuthForm from '@src/components/organism/AuthForm';
 import { useRouter } from 'next/router';
 import { loginAPI } from '@src/apis/auth';
 import styled from 'styled-components';
-import AppLayout from '@src/components/atoms/AppLayout';
 
 const Auth = () => {
   const router = useRouter();
   const handleNavigateSignUp = () => router.push('/auth/signup');
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('TOKEN')) {
       router.push('/');
     }
   }, []);
@@ -29,7 +28,7 @@ const Auth = () => {
 
 export default Auth;
 
-const Container = styled(AppLayout)`
+const Container = styled.div`
   .center {
     display: flex;
     align-items: center;
