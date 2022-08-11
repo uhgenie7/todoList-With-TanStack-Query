@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios';
 import { IResponse } from '@src/types/response';
-
-const ISSERVER = typeof window === 'undefined';
+import { ISSERVER } from '@src/constants';
 
 export const instance: AxiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
@@ -10,7 +9,7 @@ export const instance: AxiosInstance = axios.create({
 export const instanceAuth: AxiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
-    Authorization: !ISSERVER && `Bearer ${localStorage.getItem('token')}`,
+    Authorization: !ISSERVER && `Bearer ${localStorage.getItem('USER_TOKEN')}`,
   },
 });
 
