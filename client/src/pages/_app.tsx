@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RecoilRoot } from 'recoil';
+import AppLayout from '@src/components/atoms/AppLayout';
 import GlobalStyle from '@src/styles/globalStyle';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
@@ -17,13 +17,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       },
     }),
   );
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <ToastContainer />
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </Hydrate>
+      <RecoilRoot>
+        <Hydrate state={pageProps.dehydratedState}>
+          <GlobalStyle />
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </Hydrate>
+      </RecoilRoot>
     </QueryClientProvider>
   );
 }
