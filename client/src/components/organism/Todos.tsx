@@ -1,14 +1,13 @@
 import TodoList from '../molecules/TodoList';
 import styled from 'styled-components';
-import { ITodoArr } from '@src/types';
 
-const Todos = ({ todos }: ITodoArr) => {
+const Todos = () => {
   return (
     <Container>
       <div className="row">
         <section>
           <h2>목록</h2>
-          <TodoList todos={todos} />
+          <TodoList />
         </section>
       </div>
     </Container>

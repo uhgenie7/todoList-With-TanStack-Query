@@ -1,23 +1,28 @@
 import { instance } from '..';
+import type { IUserInfo } from '@src/types/userAuthTypes';
+import type { IUserAuthResponse } from '@src/types/response';
+import { AxiosResponse } from 'axios';
 
-export const signUpAPI = async (data: any) => {
-  const response = await instance.post('/users/create', data);
+export const signUpAPI = async (data: IUserInfo): Promise<AxiosResponse<IUserAuthResponse>> => {
+  const response = await instance.post<IUserAuthResponse>('/users/create', data);
   try {
-    localStorage.setItem('USER_TOKEN', response.token);
+    const { token } = response;
+    localStorage.setItem('USER_TOKEN', token);
     console.log(response);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     return error;
   }
 };
 
-export const loginAPI = async (data: any) => {
-  const response = await instance.post('/users/login', data);
+export const loginAPI = async (data: IUserInfo): Promise<AxiosResponse<IUserAuthResponse>> => {
+  const response = await instance.post<IUserAuthResponse>('/users/login', data);
   try {
+    const { token } = response;
     console.log(response);
-    localStorage.setItem('USER_TOKEN', response.token);
+    localStorage.setItem('USER_TOKEN', token);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     return error;
   }
 };

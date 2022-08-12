@@ -1,11 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { QueryUserAuthKeys } from '@src/constants/QueryUserAuthKeys';
 import { signUpAPI, loginAPI } from '@src/apis/auth';
 import useToast from '@src/hooks/useToast';
+import { IUserInfo } from '@src/types/userAuthTypes';
 
-export const useSignUpQuery = (userInfo: any) => {
+export const useSignUpQuery = (userInfo: IUserInfo) => {
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
@@ -15,12 +15,14 @@ export const useSignUpQuery = (userInfo: any) => {
       router.push('/');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };
 
-export const useLoginQuery = (userInfo: any) => {
+export const useLoginQuery = (userInfo: IUserInfo) => {
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
@@ -30,12 +32,14 @@ export const useLoginQuery = (userInfo: any) => {
       router.push('/');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };
 
-export const useUserAuthQuery = (userInfo: any, handleAuthAPI, queryKey) => {
+export const useUserAuthQuery = (userInfo: IUserInfo, handleAuthAPI: any, queryKey: string[]) => {
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
@@ -45,7 +49,9 @@ export const useUserAuthQuery = (userInfo: any, handleAuthAPI, queryKey) => {
       router.push('/');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };

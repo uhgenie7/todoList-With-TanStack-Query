@@ -1,6 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { UseMutationOptions } from '@tanstack/react-query';
-import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import { getTodoListAPI, getTodoByIdAPI, createTodoAPI, updateTodoAPI, deleteTodoAPI } from '@src/apis/todos';
 import useToast from '@src/hooks/useToast';
 
@@ -10,7 +8,11 @@ export const useGetTodoListQuery = () => {
     suspense: true,
     staleTime: 5000,
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        return toast.error(error);
+      } else {
+        return error;
+      }
     },
   });
 };
@@ -21,7 +23,11 @@ export const useGetTodoByIdQuery = (todoId: string) => {
     suspense: true,
     staleTime: 5000,
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        return toast.error(error);
+      } else {
+        return error;
+      }
     },
   });
 };
@@ -36,7 +42,9 @@ export const useCreateTodoQuery = (todo: any) => {
       toast.success('추가되었습니다');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };
@@ -51,13 +59,14 @@ export const useUpdateTodoQuery = (id: string, todo: any) => {
       toast.success('수정되었습니다');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };
 
 export const useDeleteTodoQuery = (id: string) => {
-  console.log('id:', id);
   const queryClient = useQueryClient();
   const toast = useToast();
   return useMutation(() => deleteTodoAPI(id), {
@@ -67,7 +76,9 @@ export const useDeleteTodoQuery = (id: string) => {
       toast.success('삭제되었습니다');
     },
     onError: (error) => {
-      toast.error(error);
+      if (typeof error === 'string') {
+        toast.error(error);
+      }
     },
   });
 };

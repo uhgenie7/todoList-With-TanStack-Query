@@ -1,11 +1,24 @@
-export interface IResponse {
+import { ITodoData } from './todoTypes';
+
+export interface IErrorResponse {
   details: string;
 }
 
-export interface IAuthResponse {
-  status: number;
+export interface IUserAuthResponse {
   message: string;
-  data: {
-    details: string;
-  };
+  token: string;
+}
+
+export interface ITodoItemResponse {
+  data: ITodoData;
+}
+
+export interface ITodoListResponse {
+  data: ITodoData[];
+}
+
+export interface IResponse<T> {
+  code: string;
+  message: string;
+  result: T;
 }

@@ -2,18 +2,16 @@ import { useState, useCallback, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
-import { ITodo } from '@src/types';
+import { ITodoData } from '@src/types/todoTypes';
 import styled from 'styled-components';
-import useToast from '@src/hooks/useToast';
-import TodoById from '@src/components/atoms/TodoById';
+import TodoById from '@src/components/molecules/TodoById';
 import { Suspense } from 'react';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 
-const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
+const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const router = useRouter();
   const { query } = useRouter();
-  console.log('TodoItemQUERY', query);
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
 
@@ -53,25 +51,8 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
   const handleModiActive = () => setReadOnly(false);
   const handleReadOnly = () => setReadOnly(true);
 
-  // const { mutate: onTodoItemUpdate } = useMutation(() => todoAction.handleUpdateTodoItem(id, todo), {
-  //   onSuccess: (res) => {
-  //     toast.success('등록되었습니다');
-  //     refetch();
-  //     handleReadOnly();
-  //     console.log(res);
-  //   },
-  // });
-
   const { mutate: onTodoItemUpdate } = useUpdateTodoQuery(id, todo);
   const { mutate: onTodoItemDelete } = useDeleteTodoQuery(id);
-
-  // useMutation(() => todoAction.handleDeleteTodoItem(id), {
-  //   onSuccess: (res) => {
-  //     toast.success('삭제되었습니다');
-  //     refetch();
-  //     console.log(res);
-  //   },
-  // });
 
   const CheckReallyDeleteTodoItem = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {

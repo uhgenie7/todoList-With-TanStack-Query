@@ -1,12 +1,13 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { isLoginState } from '@src/states/loginState';
 import { instance } from '@src/apis';
 import { USER_TOKEN } from '@src/constants';
+import type { IUserInfo } from '@src/types/userAuthTypes';
 
 export const useUserActions = () => {
-  const [isLogged, setIsLogged] = useRecoilState(isLoginState);
+  const setIsLogged = useRecoilValue<string | null>(isLoginState);
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: IUserInfo) => {
     try {
       const response = await instance.post('/users/login', data);
       console.log(response);
@@ -23,7 +24,7 @@ export const useUserActions = () => {
     setIsLogged(null);
   };
 
-  const handleSignUp = async (data: any) => {
+  const handleSignUp = async (data: IUserInfo) => {
     try {
       const response = await instance.post('/users/create', data);
       console.log(response);

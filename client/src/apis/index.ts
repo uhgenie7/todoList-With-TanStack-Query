@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from 'axios';
-import { IResponse } from '@src/types/response';
+import { IErrorResponse } from '@src/types/response';
 import { ISSERVER } from '@src/constants';
 
 export const instance: AxiosInstance = axios.create({
@@ -18,8 +18,9 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response.data;
 };
 
-const onResponseError = (error: AxiosError<IResponse>): Promise<AxiosError> => {
+const onResponseError = (error: AxiosError<IErrorResponse>): Promise<AxiosError> => {
   const code = error.code;
+
   switch (code) {
     case 'ERR_BAD_REQUEST':
       throw error.response?.data.details;
