@@ -1,5 +1,4 @@
 import { useState, useCallback, ChangeEvent } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
@@ -8,14 +7,13 @@ import styled from 'styled-components';
 import useToast from '@src/hooks/useToast';
 import TodoById from '@src/components/atoms/TodoById';
 import { Suspense } from 'react';
-import { useTodoActions } from '@src/hooks/useTodoActions';
 import useDate from '@src/hooks/useDate';
+import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 
-const TodoItem = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) => {
-  const todoAction = useTodoActions();
-  const toast = useToast();
+const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodo) => {
   const router = useRouter();
   const { query } = useRouter();
+  console.log('TodoItemQUERY', query);
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
 
@@ -50,27 +48,41 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) 
 
   const handleTodoById = useCallback(() => {
     router.push(`/${id}`, undefined, { scroll: false });
-  }, []);
+  }, [router]);
 
   const handleModiActive = () => setReadOnly(false);
   const handleReadOnly = () => setReadOnly(true);
 
-  const { mutate: onUpdate } = useMutation(() => todoAction.handleUpdateTodoItem(id, todo), {
-    onSuccess: (res) => {
-      toast.success('등록되었습니다');
-      refetch();
-      handleReadOnly();
-      console.log(res);
-    },
-  });
+  // const { mutate: onTodoItemUpdate } = useMutation(() => todoAction.handleUpdateTodoItem(id, todo), {
+  //   onSuccess: (res) => {
+  //     toast.success('등록되었습니다');
+  //     refetch();
+  //     handleReadOnly();
+  //     console.log(res);
+  //   },
+  // });
 
-  const { mutate: onDelete } = useMutation(() => todoAction.handleDeleteTodoItem(id), {
-    onSuccess: (res) => {
-      toast.success('삭제되었습니다');
-      refetch();
-      console.log(res);
-    },
-  });
+  const { mutate: onTodoItemUpdate } = useUpdateTodoQuery(id, todo);
+  const { mutate: onTodoItemDelete } = useDeleteTodoQuery(id);
+
+  // useMutation(() => todoAction.handleDeleteTodoItem(id), {
+  //   onSuccess: (res) => {
+  //     toast.success('삭제되었습니다');
+  //     refetch();
+  //     console.log(res);
+  //   },
+  // });
+
+  const CheckReallyDeleteTodoItem = async () => {
+    if (confirm('정말 삭제하시겠습니까?')) {
+      onTodoItemDelete();
+    }
+  };
+
+  const handleTodoUpdate = async () => {
+    onTodoItemUpdate();
+    handleReadOnly();
+  };
 
   const cancelTodo = () => {
     setTodo({
@@ -98,12 +110,12 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) 
             onChange={onChangeTodoContent}
             readOnly={readOnly}
           />
-          <ButtonWrapper isDanger={true} buttonValue="삭제" isCorrect={true} onClick={onDelete} />
+          <ButtonWrapper isDanger={true} buttonValue="삭제" isCorrect={true} onClick={CheckReallyDeleteTodoItem} />
           <ButtonWrapper
             isDanger={false}
             buttonValue={readOnly ? '수정' : '제출'}
             isCorrect={true}
-            onClick={readOnly ? handleModiActive : onUpdate}
+            onClick={readOnly ? handleModiActive : handleTodoUpdate}
           />
           {!readOnly && <ButtonWrapper isDanger={false} buttonValue="취소" isCorrect={true} onClick={cancelTodo} />}
         </div>

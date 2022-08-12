@@ -1,17 +1,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
-import { QueryKeys } from '@src/constants/QueryKeys';
-import { getTodoByIdAPI } from '@src/apis/todos';
+import { useGetTodoByIdQuery } from '@src/hooks/query/todo';
 
 const TodoById = () => {
   const {
     query: { id },
   } = useRouter();
 
-  const { data: detailTodos, refetch } = useQuery(QueryKeys.TODO, () => getTodoByIdAPI(id), {
-    suspense: true,
-  });
+  const { data: detailTodos, refetch } = useGetTodoByIdQuery(id);
 
   useEffect(() => {
     refetch();
@@ -19,8 +15,8 @@ const TodoById = () => {
 
   return (
     <>
-      <h3>{detailTodos?.data.title}</h3>
-      <p>{detailTodos?.data.content}</p>
+      <h3>{detailTodos?.data?.title}</h3>
+      <p>{detailTodos?.data?.content}</p>
     </>
   );
 };
