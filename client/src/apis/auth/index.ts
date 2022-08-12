@@ -1,8 +1,8 @@
 import { instance } from '..';
 
 export const signUpAPI = async (data: any) => {
+  const response = await instance.post('/users/create', data);
   try {
-    const response = await instance.post('/users/create', data);
     localStorage.setItem('USER_TOKEN', response.token);
     console.log(response);
     return response;
@@ -12,8 +12,8 @@ export const signUpAPI = async (data: any) => {
 };
 
 export const loginAPI = async (data: any) => {
+  const response = await instance.post('/users/login', data);
   try {
-    const response = await instance.post('/users/login', data);
     console.log(response);
     localStorage.setItem('USER_TOKEN', response.token);
     return response;
