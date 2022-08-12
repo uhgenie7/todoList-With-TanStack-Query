@@ -5,7 +5,7 @@ import Button from '../atoms/Button';
 import Input from '../atoms/Input';
 import { ITodo } from '@src/types';
 import styled from 'styled-components';
-import showToast from '@src/libs/common';
+import useToast from '@src/hooks/useToast';
 import TodoById from '@src/components/atoms/TodoById';
 import { Suspense } from 'react';
 import { useTodoActions } from '@src/hooks/useTodoActions';
@@ -13,7 +13,7 @@ import useDate from '@src/hooks/useDate';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt, refetch }: ITodo) => {
   const todoAction = useTodoActions();
-  const toast = showToast();
+  const toast = useToast();
   const router = useRouter();
   const { query } = useRouter();
   const createdDate = useDate(createdAt);

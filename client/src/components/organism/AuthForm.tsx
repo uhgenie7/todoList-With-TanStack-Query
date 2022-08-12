@@ -7,7 +7,7 @@ import Button from '@src/components/atoms/Button';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
-import showToast from '@src/libs/common';
+import useToast from '@src/hooks/useToast';
 import { IAuthResponse } from '@src/types/response';
 
 interface IFormProps {
@@ -19,7 +19,7 @@ const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
 
-  const toast = showToast();
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');

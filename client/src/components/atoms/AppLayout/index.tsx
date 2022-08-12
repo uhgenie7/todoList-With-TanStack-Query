@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { isLoginState } from '@src/states/loginState';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import showToast from '@src/libs/common';
+import useToast from '@src/hooks/useToast';
 import Header from '@src/components/atoms/Header';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -15,7 +15,7 @@ interface IProps {
 const AppLayout = ({ children }: IProps) => {
   const router = useRouter();
   const pathname = router.pathname;
-  const toast = showToast();
+  const toast = useToast();
   const isLoggedIn = useRecoilValue(isLoginState);
 
   useEffect(() => {

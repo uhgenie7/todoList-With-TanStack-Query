@@ -3,12 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import InputForm from './InputForm';
-import showToast from '@src/libs/common';
+import useToast from '@src/hooks/useToast';
 import { useTodoActions } from '@src/hooks/useTodoActions';
 
 const TodoItemCreateForm = ({ refetch, ...props }) => {
   const todoAction = useTodoActions();
-  const toast = showToast();
+  const toast = useToast();
 
   const {
     register,
