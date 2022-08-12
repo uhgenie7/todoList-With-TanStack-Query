@@ -19,7 +19,13 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 };
 
 const onResponseError = (error: AxiosError<IErrorResponse>): Promise<AxiosError> => {
+  console.log(error);
   const code = error.code;
+  const message = error.response?.data.details;
+
+  if (message === 'todo를 찾는 도중 문제가 생겼습니다') {
+    throw (window.location.href = '/');
+  }
 
   switch (code) {
     case 'ERR_BAD_REQUEST':
