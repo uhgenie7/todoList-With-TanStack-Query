@@ -1,29 +1,32 @@
 import { useQuery, QueryClient, dehydrate } from '@tanstack/react-query';
 import { QueryKeys } from '@src/constants/QueryKeys';
-import Todo from './Todo';
+import TodoItem from './TodoItem';
 import { getTodosAPI } from '@src/apis/todos';
-import TodoForm from '../molecules/TodoForm';
+import TodoItemCreateForm from '../molecules/TodoItemCreateForm';
 import styled from 'styled-components';
+import { useTodoActions } from '@src/hooks/useTodoActions';
 
 const TodoList = () => {
+  const userTodoActions = useTodoActions();
+
   const {
     data: { data: freshTodos },
     refetch,
-  } = useQuery(QueryKeys.TODOS, getTodosAPI, {
+  } = useQuery(QueryKeys.TODOS, userTodoActions.handleGetTodoList, {
     suspense: true,
   });
 
   return (
     <Container>
       <div className="form">
-        <TodoForm refetch={refetch} />
+        <TodoItemCreateForm refetch={refetch} />
       </div>
       <ul className="messages">
         {freshTodos &&
           [...freshTodos]
             .reverse()
             .map(({ id, title, content, createdAt, updatedAt }) => (
-              <Todo
+              <TodoItem
                 id={id}
                 key={id}
                 title={title}
