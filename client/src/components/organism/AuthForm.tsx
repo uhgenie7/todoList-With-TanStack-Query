@@ -10,16 +10,14 @@ import { useMutation } from '@tanstack/react-query';
 import useToast from '@src/hooks/useToast';
 import { IAuthResponse } from '@src/types/response';
 
+import { useUserAuthQuery } from '@src/hooks/query/auth';
 interface IFormProps {
   buttonValue: string;
   handleLoginAPI: any;
+  queryKey: any;
 }
 
-const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
-  const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-
-  const toast = useToast();
+const AuthForm = ({ buttonValue, handleLoginAPI, queryKey }: IFormProps) => {
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');
@@ -60,29 +58,7 @@ const AuthForm = ({ buttonValue, handleLoginAPI }: IFormProps) => {
     isEmail && isPassword ? setIsCorrect(true) : setIsCorrect(false);
   }, [email, password]);
 
-  // const onClickPostAPI = useCallback(async () => {
-  //   const res = await handleLoginAPI({ email, password });
-  //   if (res.status === 200) {
-  //     router.push('/');
-  //   } else {
-  //     router.push('/auth');
-  //   }
-  // }, [email, password]);
-
-  const { mutate: onSignUp } = useMutation(() => handleLoginAPI({ email, password }), {
-    onSuccess: async (res: IAuthResponse) => {
-      if (res.status === 400 || res.status === 409) {
-        toast.error(res.data.details);
-      } else {
-        toast.success(res.message);
-        setIsLoggedIn(true);
-        router.push('/');
-      }
-    },
-    onError: async (error) => {
-      console.log(error);
-    },
-  });
+  const { mutate: onSignUp } = useUserAuthQuery({ email, password }, handleLoginAPI, queryKey);
 
   return (
     <Container>

@@ -1,40 +1,29 @@
-import { useQuery, QueryClient, dehydrate } from '@tanstack/react-query';
-import { QueryKeys } from '@src/constants/QueryKeys';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import TodoItem from './TodoItem';
-import { getTodosAPI } from '@src/apis/todos';
+import { getTodoListAPI } from '@src/apis/todos';
 import TodoItemCreateForm from '../molecules/TodoItemCreateForm';
 import styled from 'styled-components';
-import { useTodoActions } from '@src/hooks/useTodoActions';
+import { useGetTodoListQuery } from '@src/hooks/query/todo';
 
 const TodoList = () => {
-  const userTodoActions = useTodoActions();
-
   const {
     data: { data: freshTodos },
-    refetch,
-  } = useQuery(QueryKeys.TODOS, userTodoActions.handleGetTodoList, {
-    suspense: true,
-  });
+  } = useGetTodoListQuery();
+
+  console.log(freshTodos);
 
   return (
     <Container>
       <div className="form">
-        <TodoItemCreateForm refetch={refetch} />
+        <TodoItemCreateForm />
       </div>
       <ul className="messages">
         {freshTodos &&
           [...freshTodos]
             .reverse()
             .map(({ id, title, content, createdAt, updatedAt }) => (
-              <TodoItem
-                id={id}
-                key={id}
-                title={title}
-                content={content}
-                createdAt={createdAt}
-                updatedAt={updatedAt}
-                refetch={refetch}
-              />
+              <TodoItem id={id} key={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
             ))}
       </ul>
     </Container>
@@ -52,7 +41,7 @@ const Container = styled.div`
 export async function getStaticProps() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(QueryKeys.TODOS, getTodosAPI);
+  await queryClient.prefetchQuery(QueryTodoKeys.all, getTodoListAPI);
 
   return {
     props: {

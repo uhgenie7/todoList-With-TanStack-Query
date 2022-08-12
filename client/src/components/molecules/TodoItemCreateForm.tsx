@@ -1,13 +1,13 @@
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import InputForm from './InputForm';
 import useToast from '@src/hooks/useToast';
-import { useTodoActions } from '@src/hooks/useTodoActions';
-
-const TodoItemCreateForm = ({ refetch, ...props }) => {
-  const todoAction = useTodoActions();
+import { useCreateTodoQuery } from '@src/hooks/query/todo';
+const TodoItemCreateForm = ({ ...props }) => {
+  const [todo, setTodo] = useState();
   const toast = useToast();
 
   const {
@@ -19,19 +19,27 @@ const TodoItemCreateForm = ({ refetch, ...props }) => {
     mode: 'onSubmit',
   });
 
-  const { mutate: addTodoItem } = useMutation((todo) => todoAction.handleCreateTodoItem(todo), {
-    onSuccess: (res) => {
-      toast.success('추가되었습니다.');
-      refetch();
-      reset({ title: '', content: '' });
-      console.log(res);
-    },
-  });
+  // const { mutate: addTodoItem } = useMutation((todo) => todoAction.handleCreateTodoItem(todo), {
+  //   onSuccess: (res) => {
+  //     toast.success('추가되었습니다.');
+  //     refetch();
+  //     reset({ title: '', content: '' });
+  //     console.log(res);
+  //   },
+  // });
+
+  const { mutate: onTodoItemCreate } = useCreateTodoQuery(todo);
 
   const onSubmit = (todo) => {
-    addTodoItem(todo);
-    console.log(todo);
+    setTodo(todo);
   };
+
+  useEffect(() => {
+    if (todo) {
+      onTodoItemCreate();
+      reset({ title: '', content: '' });
+    }
+  }, [todo]);
 
   return (
     <Container>
