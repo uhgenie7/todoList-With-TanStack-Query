@@ -1,17 +1,17 @@
-import { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ForwardedRef } from 'react';
 import styled from 'styled-components';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   labelFor?: string;
 }
 
-const Input = ({ labelFor, ...props }: IProps) => {
+const Input = React.forwardRef(({ labelFor, ...props }: IProps, ref?: ForwardedRef<HTMLInputElement>) => {
   return (
     <>
-      <Container id={labelFor} {...props} />
+      <Container ref={ref} id={labelFor} {...props} />
     </>
   );
-};
+});
 export default Input;
 
 const Container = styled.input`

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, ForwardedRef } from 'react';
 import Label from '@src/components/atoms/Label';
 import Input from '@src/components/atoms/Input';
 import styled from 'styled-components';
@@ -6,20 +6,21 @@ import styled from 'styled-components';
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   labelFor: string;
   labelValue: string;
-  value: string;
   isError?: boolean;
   errorMessage?: string;
 }
 
-const InputForm = ({ labelFor, labelValue, errorMessage, isError, ...props }: IProps) => {
-  return (
-    <Container>
-      <Label labelFor={labelFor} labelValue={String(labelValue)} />
-      <Input labelFor={labelFor} {...props} />
-      {isError && <p>! {errorMessage}</p>}
-    </Container>
-  );
-};
+const InputForm = React.forwardRef(
+  ({ labelFor, labelValue, errorMessage, isError, ...props }: IProps, ref?: ForwardedRef<HTMLDivElement>) => {
+    return (
+      <Container ref={ref}>
+        <Label labelFor={labelFor} labelValue={String(labelValue)} />
+        <Input labelFor={labelFor} {...props} />
+        {isError && <p>! {errorMessage}</p>}
+      </Container>
+    );
+  },
+);
 
 export default InputForm;
 
