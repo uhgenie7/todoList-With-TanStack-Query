@@ -14,20 +14,22 @@ interface IProps {
 
 const AppLayout = ({ children }: IProps) => {
   const router = useRouter();
-  const AUTH = router.pathname;
+  const pathname = router.pathname;
   const toast = showToast();
   const isLoggedIn = useRecoilValue(isLoginState);
 
   useEffect(() => {
     if (!isLoggedIn) {
-      toast.success('로그인 먼저 해주세요');
-      router.push('/auth');
+      router.replace('/auth');
+      if (pathname === '/auth') {
+        toast.error('로그인 먼저 해주세요');
+      }
     }
   }, [isLoggedIn]);
 
   return (
     <>
-      <Header />
+      {isLoggedIn && <Header />}
       <ToastContainer />
       <Container>{children}</Container>
     </>
