@@ -10,9 +10,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     new QueryClient({
       defaultOptions: {
         queries: {
+          suspense: true,
           refetchOnWindowFocus: false,
           refetchOnMount: false,
-          retry: false,
+          retry: 0,
         },
       },
     }),
