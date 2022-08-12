@@ -14,17 +14,15 @@ export const instanceAuth: AxiosInstance = axios.create({
 });
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
+  console.log(response.data);
   return response.data;
 };
 
 const onResponseError = (error: AxiosError<IResponse>): Promise<AxiosError> => {
-  const response = error.response;
-  const status = response?.status;
-  switch (status) {
-    case 400:
-      throw response;
-    case 409:
-      throw response;
+  const code = error.code;
+  switch (code) {
+    case 'ERR_BAD_REQUEST':
+      throw error.response?.data.details;
   }
 
   return Promise.reject(error.response);
