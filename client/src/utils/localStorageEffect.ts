@@ -1,13 +1,17 @@
+const localStorage = typeof window !== 'undefined' ? window.localStorage : null;
+
 export const localStorageEffect =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    const savedValue = localStorage.getItem(key);
-    // console.log(savedValue);
+  (key: string) =>
+  ({ setSelf, onSet }: any) => {
+    const savedValue = localStorage && localStorage.getItem(key);
+
     if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
+      setSelf(savedValue || null);
     }
 
-    onSet((newValue) => {
-      localStorage.setItem(key, JSON.stringify(newValue));
+    onSet((newValue: string, _: any, isReset: boolean) => {
+      isReset
+        ? localStorage && localStorage.removeItem(key)
+        : localStorage && localStorage.setItem(key, JSON.stringify(newValue));
     });
   };
