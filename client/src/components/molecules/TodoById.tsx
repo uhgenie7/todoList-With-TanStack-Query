@@ -3,9 +3,8 @@ import { useRouter } from 'next/router';
 import { useGetTodoByIdQuery } from '@src/hooks/query/todo';
 
 const TodoById = () => {
-  const {
-    query: { id },
-  } = useRouter();
+  const router = useRouter();
+  const id = router.query + '';
 
   const { data: detailTodos, refetch } = useGetTodoByIdQuery(id);
 
