@@ -1,9 +1,7 @@
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Todos from '@src/components/organism/Todos';
-import { getTodoListAPI } from '@src/apis/todos';
 import { Suspense } from 'react';
-
+import Header from '@src/components/atoms/Header';
 const Home = () => {
   return (
     <div>
@@ -11,6 +9,7 @@ const Home = () => {
         <title>wanted-pre-onboarding-challenge-fe-1</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header />
       <Suspense fallback={<div>loading</div>}>
         <Todos />
       </Suspense>
@@ -20,10 +19,10 @@ const Home = () => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { data: todos } = await getTodoListAPI();
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { data: todos } = await getTodoListAPI();
 
-  return {
-    props: { todos },
-  };
-};
+//   return {
+//     props: { todos },
+//   };
+// };
