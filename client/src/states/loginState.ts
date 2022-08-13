@@ -4,6 +4,6 @@ import { USER_TOKEN } from '@src/constants';
 
 export const isLoginState = atom({
   key: 'isLoginState',
-  default: {} as null | string,
+  default: null,
   effects: [localStorageEffect(USER_TOKEN)],
 });
