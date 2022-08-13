@@ -1,5 +1,6 @@
 # Develop_branch
 - 사전과제 브랜치입니다
+- 22.8.8 ~ 22.8.11
 
 ## Assignment 1 - Login / SignUp
 
