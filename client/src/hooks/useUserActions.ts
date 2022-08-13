@@ -1,11 +1,11 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isLoginState } from '@src/states/loginState';
 import { instance } from '@src/apis';
 import { USER_TOKEN } from '@src/constants';
 import type { IUserInfo } from '@src/types/userAuthTypes';
 
 export const useUserActions = () => {
-  const setIsLogged = useRecoilValue<string | null>(isLoginState);
+  const [isLogged, setIsLogged] = useRecoilState<string | null>(isLoginState);
 
   const handleLogin = async (data: IUserInfo) => {
     try {
