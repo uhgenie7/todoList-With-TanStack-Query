@@ -1,35 +1,42 @@
-import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { isLoginState } from '@src/states/loginState';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import useToast from '@src/hooks/useToast';
-import Header from '@src/components/atoms/Header';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-
+import { USER_TOKEN } from '@src/constants';
+import { ISSERVER } from '@src/constants';
 interface IProps {
   children: React.ReactNode;
 }
 
 const AppLayout = ({ children }: IProps) => {
-  const router = useRouter();
-  const pathname = router.pathname;
-  const toast = useToast();
-  const isLoggedIn = useRecoilValue(isLoginState);
+  // const [isLoggedIn, setIsLoggedIn] = useState<string | false | null>(null);
+  // const router = useRouter();
+  // const toast = useToast();
+  // const currentPageName = router.pathname;
+  // const pageRootName = currentPageName.slice(1).split('/')[0];
+  // const protectedPages = ['', '/', '[id]'];
+  // const isPublicPage = !protectedPages.includes(pageRootName);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace('/auth');
-      if (pathname === '/auth') {
-        toast.error('로그인 먼저 해주세요');
-      }
-    }
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   setIsLoggedIn(!ISSERVER && localStorage.getItem(USER_TOKEN));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (!isPublicPage && !isLoggedIn) {
+  //     toast.error('로그인 먼저 해주세요');
+  //     router.replace('/auth');
+  //   }
+  // }, [isLoggedIn, router]);
+
+  // if (!isPublicPage && !isLoggedIn) {
+  //   return <div>loading</div>;
+  // }
 
   return (
     <>
-      {isLoggedIn && <Header />}
       <ToastContainer />
       <Container>{children}</Container>
     </>
