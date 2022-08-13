@@ -10,12 +10,6 @@ const Auth = () => {
   const router = useRouter();
   const handleNavigateSignUp = () => router.push('/auth/signup');
 
-  useEffect(() => {
-    if (localStorage.getItem('TOKEN')) {
-      router.push('/');
-    }
-  }, []);
-
   return (
     <Container>
       <h2>로그인</h2>
