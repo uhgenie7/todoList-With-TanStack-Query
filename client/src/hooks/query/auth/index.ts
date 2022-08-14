@@ -4,13 +4,18 @@ import { QueryUserAuthKeys } from '@src/constants/QueryUserAuthKeys';
 import { signUpAPI, loginAPI } from '@src/apis/auth';
 import useToast from '@src/hooks/useToast';
 import { IUserInfo } from '@src/types/userAuthTypes';
+import { useAppDispatch } from '@src/hooks/useDispatch';
+import { loggedInAction } from '@src/reducers/userSlice';
 
 export const useSignUpQuery = (userInfo: IUserInfo) => {
+  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
   return useMutation(() => signUpAPI(userInfo), {
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log(res);
+      dispatch(loggedInAction(true));
       queryClient.invalidateQueries(QueryUserAuthKeys.signUp);
       router.push('/');
     },
@@ -23,29 +28,14 @@ export const useSignUpQuery = (userInfo: IUserInfo) => {
 };
 
 export const useLoginQuery = (userInfo: IUserInfo) => {
+  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
   return useMutation(() => loginAPI(userInfo), {
     onSuccess: () => {
+      dispatch(loggedInAction(true));
       queryClient.invalidateQueries(QueryUserAuthKeys.login);
-      router.push('/');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
-      }
-    },
-  });
-};
-
-export const useUserAuthQuery = (userInfo: IUserInfo, handleAuthAPI: any, queryKey: string[]) => {
-  const queryClient = useQueryClient();
-  const toast = useToast();
-  const router = useRouter();
-  return useMutation(() => handleAuthAPI(userInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKey);
       router.push('/');
     },
     onError: (error) => {
