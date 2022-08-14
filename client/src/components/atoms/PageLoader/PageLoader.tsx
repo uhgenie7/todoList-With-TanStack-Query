@@ -1,4 +1,4 @@
-const FullPageLoader = () => {
+const PageLoader = () => {
   return (
     <div>
       <p>Loading...</p>
@@ -6,4 +6,4 @@ const FullPageLoader = () => {
   );
 };
 
-export default FullPageLoader;
+export default PageLoader;
