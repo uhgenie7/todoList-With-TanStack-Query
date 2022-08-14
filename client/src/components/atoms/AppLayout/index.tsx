@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import Header from '@src/components/atoms/Header';
 
 interface IProps {
   children: React.ReactNode;
@@ -15,7 +16,10 @@ const AppLayout = ({ children }: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ToastContainer />
-      <Container>{children}</Container>
+      <Container>
+        <Header />
+        {children}
+      </Container>
     </>
   );
 };
