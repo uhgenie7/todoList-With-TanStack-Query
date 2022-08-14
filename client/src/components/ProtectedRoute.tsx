@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import ROUTES from '@src/constants/routes';
 import { ISSERVER } from '@src/constants';
-import PageLoader from './atoms/PageLoader/PageLoader';
+import PageLoader from './atoms/PageLoader';
 import { useAppSelector } from '@src/hooks/useSelector';
 
 const ProtectedRoute = ({ router, children }) => {
