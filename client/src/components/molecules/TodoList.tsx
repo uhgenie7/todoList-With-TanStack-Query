@@ -2,8 +2,6 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import TodoItem from './TodoItem';
 import { getTodoListAPI } from '@src/apis/todos';
-import TodoItemCreateForm from '../molecules/TodoItemCreateForm';
-import styled from 'styled-components';
 import { useGetTodoListQuery } from '@src/hooks/query/todo';
 
 const TodoList = () => {
@@ -14,10 +12,8 @@ const TodoList = () => {
   console.log(freshTodos);
 
   return (
-    <Container>
-      <div className="form">
-        <TodoItemCreateForm />
-      </div>
+    <div>
+      <h2>할일 목록</h2>
       <ul className="messages">
         {freshTodos &&
           [...freshTodos]
@@ -26,17 +22,11 @@ const TodoList = () => {
               <TodoItem id={id} key={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
             ))}
       </ul>
-    </Container>
+    </div>
   );
 };
 
 export default TodoList;
-
-const Container = styled.div`
-  .form {
-    margin-bottom: 1rem;
-  }
-`;
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();
