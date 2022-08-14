@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
 import Button from '@src/components/atoms/Button';
-import AuthForm from '@src/components/organism/AuthForm';
 import { useRouter } from 'next/router';
-import { loginAPI } from '@src/apis/auth';
 import styled from 'styled-components';
-import { QueryUserAuthKeys } from '@src/constants/QueryUserAuthKeys';
+import LoginPage from '@src/components/pages/LoginPage';
 
 const Auth = () => {
   const router = useRouter();
@@ -12,11 +9,8 @@ const Auth = () => {
 
   return (
     <Container>
-      <h2>로그인</h2>
-      <div className="center">
-        <AuthForm queryKey={QueryUserAuthKeys.login} buttonValue="로그인" handleLoginAPI={loginAPI} />
-        <Button isCorrect={true} buttonValue="회원가입" onClick={handleNavigateSignUp} />
-      </div>
+      <LoginPage />
+      <Button isCorrect={true} buttonValue="회원가입" onClick={handleNavigateSignUp} />
     </Container>
   );
 };
