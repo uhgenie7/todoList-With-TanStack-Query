@@ -6,13 +6,15 @@ import useToast from '@src/hooks/useToast';
 import { IUserInfo } from '@src/types/userAuthTypes';
 import { useAppDispatch } from '@src/hooks/useDispatch';
 import { loggedInAction } from '@src/reducers/userSlice';
+import { IUserAuthResponse } from '@src/types/response';
+import { AxiosError } from 'axios';
 
 export const useSignUpQuery = (userInfo: IUserInfo) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
-  return useMutation(() => signUpAPI(userInfo), {
+  return useMutation<{ data: IUserAuthResponse }, AxiosError, IUserInfo>(() => signUpAPI(userInfo), {
     onSuccess: (res) => {
       console.log(res);
       dispatch(loggedInAction(true));
@@ -32,7 +34,7 @@ export const useLoginQuery = (userInfo: IUserInfo) => {
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
-  return useMutation(() => loginAPI(userInfo), {
+  return useMutation<{ data: IUserAuthResponse }, AxiosError, IUserInfo>(() => loginAPI(userInfo), {
     onSuccess: () => {
       dispatch(loggedInAction(true));
       queryClient.invalidateQueries(QueryUserAuthKeys.login);
