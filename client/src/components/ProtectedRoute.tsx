@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import ROUTES from '@src/constants/routes';
 import { ISSERVER } from '@src/constants';
-import FullPageLoader from './FullPageLoader';
+import PageLoader from './atoms/PageLoader/PageLoader';
 import { useAppSelector } from '@src/hooks/useSelector';
 
 const ProtectedRoute = ({ router, children }) => {
@@ -19,7 +19,7 @@ const ProtectedRoute = ({ router, children }) => {
   }, [isAuthenticated, pathIsProtected, router]);
 
   if (!ISSERVER && !isAuthenticated && pathIsProtected) {
-    return <FullPageLoader />;
+    return <PageLoader />;
   }
 
   return children;
