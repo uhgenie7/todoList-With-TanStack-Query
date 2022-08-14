@@ -3,15 +3,9 @@ import type { ChangeEvent } from 'react';
 import InputForm from '../molecules/InputForm';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
-import { useUserAuthQuery } from '@src/hooks/query/auth';
+import { IFormProps } from '@src/types/userAuthTypes';
 
-interface IFormProps {
-  buttonValue: string;
-  handleLoginAPI: any;
-  queryKey: any;
-}
-
-const AuthForm = ({ buttonValue, handleLoginAPI, queryKey }: IFormProps) => {
+const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');
@@ -52,7 +46,7 @@ const AuthForm = ({ buttonValue, handleLoginAPI, queryKey }: IFormProps) => {
     isEmail && isPassword ? setIsCorrect(true) : setIsCorrect(false);
   }, [email, password]);
 
-  const { mutate: onSignUp } = useUserAuthQuery({ email, password }, handleLoginAPI, queryKey);
+  const { mutate: onSubmit } = useQuery({ email, password });
 
   return (
     <Container>
@@ -81,7 +75,7 @@ const AuthForm = ({ buttonValue, handleLoginAPI, queryKey }: IFormProps) => {
             errorMessage={'8자리 이상 입력해주세요'}
           />
         </div>
-        <ButtonWrapper isCorrect={isCorrect} buttonValue={buttonValue} onClick={onSignUp} />
+        <ButtonWrapper isCorrect={isCorrect} buttonValue={buttonValue} onClick={onSubmit} />
       </div>
     </Container>
   );
