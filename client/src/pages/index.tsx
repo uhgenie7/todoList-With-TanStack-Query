@@ -1,10 +1,8 @@
 import TodosPage from '@src/components/pages/TodosPage';
-import Header from '@src/components/atoms/Header';
 
 const MainPage = () => {
   return (
     <div>
-      <Header />
       <TodosPage />
     </div>
   );
