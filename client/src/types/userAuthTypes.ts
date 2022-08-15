@@ -18,5 +18,5 @@ export interface ErrorResponse {
 
 export interface IFormProps {
   buttonValue: string;
-  useQuery: ({ email, password }: IUserInfo) => UseMutationResult<{ data: IUserAuthResponse }, AxiosError, IUserInfo>;
+  useQuery: ({ email, password }: IUserInfo) => UseMutationResult<IUserAuthResponse, AxiosError, IUserInfo>;
 }
