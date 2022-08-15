@@ -16,7 +16,7 @@ const TodoList = () => {
       <h2>할일 목록</h2>
       <ul className="messages">
         {freshTodos &&
-          [...freshTodos]
+          [...freshTodos.data]
             .reverse()
             .map(({ id, title, content, createdAt, updatedAt }) => (
               <TodoItem id={id} key={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
