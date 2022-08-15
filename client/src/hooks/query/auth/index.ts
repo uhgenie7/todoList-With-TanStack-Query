@@ -7,23 +7,22 @@ import { IUserInfo } from '@src/types/userAuthTypes';
 import { useAppDispatch } from '@src/hooks/useDispatch';
 import { loggedInAction } from '@src/reducers/userSlice';
 import { IUserAuthResponse } from '@src/types/response';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+import { USER_TOKEN } from '@src/constants';
 
 export const useSignUpQuery = (userInfo: IUserInfo) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const toast = useToast();
   const router = useRouter();
-  return useMutation<{ data: IUserAuthResponse }, AxiosError, IUserInfo>(() => signUpAPI(userInfo), {
+  return useMutation<any, AxiosError, IUserInfo>(() => signUpAPI(userInfo), {
     onSuccess: (res) => {
-      console.log(res);
-      dispatch(loggedInAction(true));
-      queryClient.invalidateQueries(QueryUserAuthKeys.signUp);
-      router.push('/');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
+      if (res) {
+        console.log(res);
+        localStorage.setItem(USER_TOKEN, res.token);
+        dispatch(loggedInAction(true));
+        queryClient.invalidateQueries(QueryUserAuthKeys.signUp);
+        router.push('/');
       }
     },
   });
@@ -32,17 +31,15 @@ export const useSignUpQuery = (userInfo: IUserInfo) => {
 export const useLoginQuery = (userInfo: IUserInfo) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
-  const toast = useToast();
   const router = useRouter();
-  return useMutation<{ data: IUserAuthResponse }, AxiosError, IUserInfo>(() => loginAPI(userInfo), {
-    onSuccess: () => {
-      dispatch(loggedInAction(true));
-      queryClient.invalidateQueries(QueryUserAuthKeys.login);
-      router.push('/');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
+  return useMutation<any, AxiosError, IUserInfo>(() => loginAPI(userInfo), {
+    onSuccess: (res) => {
+      if (res) {
+        console.log(res);
+        localStorage.setItem(USER_TOKEN, res.token);
+        dispatch(loggedInAction(true));
+        queryClient.invalidateQueries(QueryUserAuthKeys.login);
+        router.push('/');
       }
     },
   });
