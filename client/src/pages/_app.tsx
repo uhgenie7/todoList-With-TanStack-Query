@@ -21,6 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           refetchOnWindowFocus: false,
           refetchOnMount: false,
           retry: 0,
+          useErrorBoundary: true,
+        },
+        mutations: {
+          useErrorBoundary: true,
         },
       },
     }),
