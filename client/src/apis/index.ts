@@ -14,18 +14,12 @@ export const instanceAuth: AxiosInstance = axios.create({
 });
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  console.log(response.data);
-  return response.data;
+  return response;
 };
 
 const onResponseError = (error: AxiosError<IErrorResponse>): Promise<AxiosError> => {
   console.log(error);
   const code = error.code;
-  const message = error.response?.data.details;
-
-  // if (message === 'todo를 찾는 도중 문제가 생겼습니다') {
-  //   throw (window.location.href = '/');
-  // }
 
   switch (code) {
     case 'ERR_BAD_REQUEST':
