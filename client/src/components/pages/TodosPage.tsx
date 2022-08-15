@@ -1,8 +1,7 @@
-import { Suspense } from 'react';
-import PageLoader from '@src/components/atoms/PageLoader';
 import TodoItemCreateForm from '@src/components/molecules/TodoItemCreateForm';
 import TodoList from '@src/components/molecules/TodoList';
 import styled from 'styled-components';
+import ExtendsAsyncBoundary from '../boundaries/ExtendsAsyncBoundary';
 
 const TodosPage = () => {
   return (
@@ -10,9 +9,9 @@ const TodosPage = () => {
       <div className="row">
         <section>
           <TodoItemCreateForm />
-          <Suspense fallback={<PageLoader />}>
+          <ExtendsAsyncBoundary>
             <TodoList />
-          </Suspense>
+          </ExtendsAsyncBoundary>
         </section>
       </div>
     </Container>
