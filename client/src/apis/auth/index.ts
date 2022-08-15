@@ -1,29 +1,34 @@
 import { instance } from '..';
 import type { IUserInfo } from '@src/types/userAuthTypes';
 import type { IUserAuthResponse } from '@src/types/response';
-import { AxiosResponse } from 'axios';
+import { Axios, AxiosResponse } from 'axios';
 import { USER_TOKEN } from '@src/constants';
+import useToast from '@src/hooks/useToast';
 
-export const signUpAPI = async (data: IUserInfo): Promise<AxiosResponse<IUserAuthResponse>> => {
-  const response = await instance.post<IUserAuthResponse>('/users/create', data);
+export const loginAPI = async (userInfo: IUserInfo) => {
+  const toast = useToast();
   try {
-    const { token } = response;
-    localStorage.setItem(USER_TOKEN, token);
-    console.log(response);
-    return response;
-  } catch (error: any) {
-    return error;
+    const { data } = await instance.post<IUserAuthResponse>('/users/login', userInfo);
+    return data;
+  } catch (error) {
+    if (typeof error === 'string') {
+      toast.error(error);
+    } else {
+      return error;
+    }
   }
 };
 
-export const loginAPI = async (data: IUserInfo): Promise<AxiosResponse<IUserAuthResponse>> => {
-  const response = await instance.post<IUserAuthResponse>('/users/login', data);
+export const signUpAPI = async (userInfo: IUserInfo) => {
+  const toast = useToast();
   try {
-    const { token } = response;
-    console.log(response);
-    localStorage.setItem(USER_TOKEN, token);
-    return response;
-  } catch (error: any) {
-    return error;
+    const { data } = await instance.post<IUserAuthResponse>('/users/create', userInfo);
+    return data;
+  } catch (error) {
+    if (typeof error === 'string') {
+      toast.error(error);
+    } else {
+      return error;
+    }
   }
 };
