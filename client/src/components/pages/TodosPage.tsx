@@ -1,17 +1,21 @@
 import TodoItemCreateForm from '@src/components/molecules/TodoItemCreateForm';
 import TodoList from '@src/components/molecules/TodoList';
 import styled from 'styled-components';
-import ExtendsAsyncBoundary from '../boundaries/ExtendsAsyncBoundary';
+import AsyncBoundary from '@src/components/boundaries/AsyncBoundary';
+import DefaultErrorFallback from '@src/components/atoms/DefaultErrorFallback';
+import PageLoader from '@src/components/atoms/PageLoader';
 
 const TodosPage = () => {
   return (
     <Container>
       <div className="row">
         <section>
-          <TodoItemCreateForm />
-          <ExtendsAsyncBoundary>
+          <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
+            <TodoItemCreateForm />
+          </AsyncBoundary>
+          <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
             <TodoList />
-          </ExtendsAsyncBoundary>
+          </AsyncBoundary>
         </section>
       </div>
     </Container>

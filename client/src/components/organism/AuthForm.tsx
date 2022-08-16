@@ -4,8 +4,10 @@ import InputForm from '../molecules/InputForm';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import { IFormProps } from '@src/types/userAuthTypes';
+import useToast from '@src/hooks/useToast';
 
 const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
   const [password, setPassword] = useState('');
@@ -46,7 +48,10 @@ const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
     isEmail && isPassword ? setIsCorrect(true) : setIsCorrect(false);
   }, [email, password]);
 
-  const { mutate: onSubmit } = useQuery({ email, password });
+  const { mutate: onSubmit } = useQuery({
+    userInfo: { email, password },
+    errorHandler: (message: string) => toast.error(message),
+  });
 
   return (
     <Container>

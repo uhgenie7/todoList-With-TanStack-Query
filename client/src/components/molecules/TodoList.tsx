@@ -1,13 +1,18 @@
-import { QueryClient, dehydrate } from '@tanstack/react-query';
-import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
+// import { QueryClient, dehydrate } from '@tanstack/react-query';
+// import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import TodoItem from './TodoItem';
-import { getTodoListAPI } from '@src/apis/todos';
+// import { getTodoListAPI } from '@src/apis/todos';
 import { useGetTodoListQuery } from '@src/hooks/query/todo';
+import useToast from '@src/hooks/useToast';
 
 const TodoList = () => {
+  const toast = useToast();
+
   const {
     data: { data: freshTodos },
-  } = useGetTodoListQuery();
+  } = useGetTodoListQuery({
+    errorHandler: (message: string) => toast.error(message),
+  });
 
   console.log(freshTodos);
 
@@ -16,7 +21,7 @@ const TodoList = () => {
       <h2>할일 목록</h2>
       <ul className="messages">
         {freshTodos &&
-          [...freshTodos.data]
+          [...freshTodos]
             .reverse()
             .map(({ id, title, content, createdAt, updatedAt }) => (
               <TodoItem id={id} key={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
@@ -28,14 +33,14 @@ const TodoList = () => {
 
 export default TodoList;
 
-export async function getStaticProps() {
-  const queryClient = new QueryClient();
+// export async function getStaticProps() {
+//   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(QueryTodoKeys.all, getTodoListAPI);
+//   await queryClient.prefetchQuery(QueryTodoKeys.all, getTodoListAPI);
 
-  return {
-    props: {
-      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
-    },
-  };
-}
+//   return {
+//     props: {
+//       dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+//     },
+//   };
+// }

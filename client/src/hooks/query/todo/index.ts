@@ -1,84 +1,61 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTodoListAPI, getTodoByIdAPI, createTodoAPI, updateTodoAPI, deleteTodoAPI } from '@src/apis/todos';
-import useToast from '@src/hooks/useToast';
+import type { ITodoItem } from '@src/types/todoTypes';
 
-export const useGetTodoListQuery = () => {
-  const toast = useToast();
-  return useQuery(['todoList'], getTodoListAPI, {
+interface IQueryParams {
+  errorHandler: (message: string) => void;
+}
+
+interface IUseGetTodoByIdQueryParams extends IQueryParams {
+  todoId: string;
+}
+
+interface IUseCreateTodoQueryParams extends IQueryParams {
+  todo: ITodoItem;
+}
+
+interface IUseUpdateTodoQueryParams extends IUseCreateTodoQueryParams {
+  todoId: string;
+}
+
+export const useGetTodoListQuery = ({ errorHandler }: IQueryParams) => {
+  return useQuery(['todoList'], () => getTodoListAPI(errorHandler), {
     suspense: true,
     staleTime: 5000,
-    onError: (error) => {
-      if (typeof error === 'string') {
-        return toast.error(error);
-      } else {
-        return error;
-      }
-    },
   });
 };
 
-export const useGetTodoByIdQuery = (todoId: string) => {
-  const toast = useToast();
-  return useQuery(['todo'], () => getTodoByIdAPI(todoId), {
+export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQueryParams) => {
+  return useQuery(['todo'], () => getTodoByIdAPI(todoId, errorHandler), {
     suspense: true,
     staleTime: 5000,
-    onError: (error) => {
-      if (typeof error === 'string') {
-        return toast.error(error);
-      } else {
-        return error;
-      }
-    },
   });
 };
 
-export const useCreateTodoQuery = (todo: any) => {
+export const useCreateTodoQuery = ({ todo, errorHandler }: IUseCreateTodoQueryParams) => {
   const queryClient = useQueryClient();
-  const toast = useToast();
-
-  return useMutation(() => createTodoAPI(todo), {
+  return useMutation(() => createTodoAPI(todo, errorHandler), {
     onSuccess: () => {
       queryClient.invalidateQueries(['todoList']);
-      toast.success('추가되었습니다');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
-      }
     },
   });
 };
 
-export const useUpdateTodoQuery = (id: string, todo: any) => {
+export const useUpdateTodoQuery = ({ todoId, todo, errorHandler }: IUseUpdateTodoQueryParams) => {
   const queryClient = useQueryClient();
-  const toast = useToast();
-
-  return useMutation(() => updateTodoAPI(id, todo), {
+  return useMutation(() => updateTodoAPI(todoId, todo, errorHandler), {
     onSuccess: () => {
       queryClient.invalidateQueries(['todoList']);
-      toast.success('수정되었습니다');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
-      }
     },
   });
 };
 
-export const useDeleteTodoQuery = (id: string) => {
+export const useDeleteTodoQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQueryParams) => {
   const queryClient = useQueryClient();
-  const toast = useToast();
-  return useMutation(() => deleteTodoAPI(id), {
+  return useMutation(() => deleteTodoAPI(todoId, errorHandler), {
     onSuccess: (res) => {
       console.log(res);
       queryClient.invalidateQueries(['todo']);
-      toast.success('삭제되었습니다');
-    },
-    onError: (error) => {
-      if (typeof error === 'string') {
-        toast.error(error);
-      }
     },
   });
 };

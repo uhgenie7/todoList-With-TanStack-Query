@@ -5,7 +5,10 @@ import styled from 'styled-components';
 import InputForm from './InputForm';
 import type { ITodoItem } from '@src/types/todoTypes';
 import { useCreateTodoQuery } from '@src/hooks/query/todo';
+import useToast from '@src/hooks/useToast';
+
 const TodoItemCreateForm = ({ ...props }) => {
+  const toast = useToast();
   const [todo, setTodo] = useState<ITodoItem>();
 
   const {
@@ -17,7 +20,10 @@ const TodoItemCreateForm = ({ ...props }) => {
     mode: 'onSubmit',
   });
 
-  const { mutate: onTodoItemCreate } = useCreateTodoQuery(todo);
+  const { mutate: onTodoItemCreate } = useCreateTodoQuery({
+    todo: todo,
+    errorHandler: (message: string) => toast.error(message),
+  });
 
   const onSubmit: SubmitHandler<ITodoItem> = (todo: ITodoItem) => {
     setTodo(todo);

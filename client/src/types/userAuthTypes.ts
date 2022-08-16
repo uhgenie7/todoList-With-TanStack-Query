@@ -1,7 +1,3 @@
-import { UseMutationResult } from '@tanstack/react-query';
-import { IUserAuthResponse } from '@src/types/response';
-import { AxiosError } from 'axios';
-
 export interface IUserInfo {
   email: string;
   password: string;
@@ -18,5 +14,5 @@ export interface ErrorResponse {
 
 export interface IFormProps {
   buttonValue: string;
-  useQuery: ({ email, password }: IUserInfo) => UseMutationResult<IUserAuthResponse, AxiosError, IUserInfo>;
+  useQuery: any;
 }

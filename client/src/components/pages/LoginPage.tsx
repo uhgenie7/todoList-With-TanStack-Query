@@ -1,15 +1,17 @@
 import AuthForm from '@src/components/organism/AuthForm';
 import { useLoginQuery } from '@src/hooks/query/auth';
-import ExtendsAsyncBoundary from '../boundaries/ExtendsAsyncBoundary';
+import AsyncBoundary from '../boundaries/AsyncBoundary';
+import DefaultErrorFallback from '../atoms/DefaultErrorFallback';
+import PageLoader from '../atoms/PageLoader';
 
 const LoginPage = () => {
   return (
     <>
       <h2>로그인</h2>
       <div className="center">
-        <ExtendsAsyncBoundary>
+        <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
           <AuthForm useQuery={useLoginQuery} buttonValue="로그인" />
-        </ExtendsAsyncBoundary>
+        </AsyncBoundary>
       </div>
     </>
   );

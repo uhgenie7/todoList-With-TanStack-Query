@@ -8,8 +8,10 @@ import TodoById from '@src/components/molecules/TodoById';
 import { Suspense } from 'react';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
+import useToast from '@src/hooks/useToast';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
+  const toast = useToast();
   const router = useRouter();
   const { query } = useRouter();
   const createdDate = useDate(createdAt);
@@ -51,8 +53,16 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const handleModiActive = () => setReadOnly(false);
   const handleReadOnly = () => setReadOnly(true);
 
-  const { mutate: onTodoItemUpdate } = useUpdateTodoQuery(id, todo);
-  const { mutate: onTodoItemDelete } = useDeleteTodoQuery(id);
+  const { mutate: onTodoItemUpdate } = useUpdateTodoQuery({
+    todoId: id,
+    todo: todo,
+    errorHandler: (message: string) => toast.error(message),
+  });
+
+  const { mutate: onTodoItemDelete } = useDeleteTodoQuery({
+    todoId: id,
+    errorHandler: (message: string) => toast.error(message),
+  });
 
   const CheckReallyDeleteTodoItem = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {
