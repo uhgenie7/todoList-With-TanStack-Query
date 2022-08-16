@@ -35,8 +35,10 @@ export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQue
 export const useCreateTodoQuery = ({ todo, errorHandler }: IUseCreateTodoQueryParams) => {
   const queryClient = useQueryClient();
   return useMutation(() => createTodoAPI(todo, errorHandler), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todoList']);
+    onSuccess: (res) => {
+      if (res) {
+        queryClient.invalidateQueries(['todoList']);
+      }
     },
   });
 };
@@ -44,8 +46,10 @@ export const useCreateTodoQuery = ({ todo, errorHandler }: IUseCreateTodoQueryPa
 export const useUpdateTodoQuery = ({ todoId, todo, errorHandler }: IUseUpdateTodoQueryParams) => {
   const queryClient = useQueryClient();
   return useMutation(() => updateTodoAPI(todoId, todo, errorHandler), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todoList']);
+    onSuccess: (res) => {
+      if (res) {
+        queryClient.invalidateQueries(['todoList']);
+      }
     },
   });
 };
@@ -54,8 +58,10 @@ export const useDeleteTodoQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQuer
   const queryClient = useQueryClient();
   return useMutation(() => deleteTodoAPI(todoId, errorHandler), {
     onSuccess: (res) => {
-      console.log(res);
-      queryClient.invalidateQueries(['todo']);
+      if (res) {
+        console.log(res);
+        queryClient.invalidateQueries(['todo']);
+      }
     },
   });
 };
