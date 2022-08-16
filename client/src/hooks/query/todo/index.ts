@@ -1,67 +1,30 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, UseMutationOptions } from '@tanstack/react-query';
 import { getTodoListAPI, getTodoByIdAPI, createTodoAPI, updateTodoAPI, deleteTodoAPI } from '@src/apis/todos';
-import type { ITodoItem } from '@src/types/todoTypes';
+import type { IErrorHandler } from '@src/types/error';
+import type {
+  ITodoItem,
+  ICreateTodoQuery,
+  IUpdateTodoQuery,
+  IDeleteTodoQuery,
+  IGetTodoByIdQueryParams,
+} from '@src/types/todoTypes';
 
-interface IQueryParams {
-  errorHandler: (message: string) => void;
-}
-
-interface IUseGetTodoByIdQueryParams extends IQueryParams {
-  todoId: string;
-}
-
-interface IUseCreateTodoQueryParams extends IQueryParams {
-  todo: ITodoItem;
-}
-
-interface IUseUpdateTodoQueryParams extends IUseCreateTodoQueryParams {
-  todoId: string;
-}
-
-export const useGetTodoListQuery = ({ errorHandler }: IQueryParams) => {
-  return useQuery(['todoList'], () => getTodoListAPI(errorHandler), {
-    suspense: true,
-    staleTime: 5000,
-  });
+export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
+  return useQuery(['todoList'], () => getTodoListAPI(errorHandler));
 };
 
-export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQueryParams) => {
-  return useQuery(['todo'], () => getTodoByIdAPI(todoId, errorHandler), {
-    suspense: true,
-    staleTime: 5000,
-  });
+export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryParams) => {
+  return useQuery(['todo'], () => getTodoByIdAPI(todoId, errorHandler));
 };
 
-export const useCreateTodoQuery = ({ todo, errorHandler }: IUseCreateTodoQueryParams) => {
-  const queryClient = useQueryClient();
-  return useMutation(() => createTodoAPI(todo, errorHandler), {
-    onSuccess: (res) => {
-      if (res) {
-        queryClient.invalidateQueries(['todoList']);
-      }
-    },
-  });
+export const useCreateTodoQuery = ({ options, todo, errorHandler }: ICreateTodoQuery) => {
+  return useMutation<any, Error, ITodoItem>(() => createTodoAPI(todo, errorHandler), options);
 };
 
-export const useUpdateTodoQuery = ({ todoId, todo, errorHandler }: IUseUpdateTodoQueryParams) => {
-  const queryClient = useQueryClient();
-  return useMutation(() => updateTodoAPI(todoId, todo, errorHandler), {
-    onSuccess: (res) => {
-      if (res) {
-        queryClient.invalidateQueries(['todoList']);
-      }
-    },
-  });
+export const useUpdateTodoQuery = ({ options, todoId, todo, errorHandler }: IUpdateTodoQuery) => {
+  return useMutation<any, Error, ITodoItem>(() => updateTodoAPI(todoId, todo, errorHandler), options);
 };
 
-export const useDeleteTodoQuery = ({ todoId, errorHandler }: IUseGetTodoByIdQueryParams) => {
-  const queryClient = useQueryClient();
-  return useMutation(() => deleteTodoAPI(todoId, errorHandler), {
-    onSuccess: (res) => {
-      if (res) {
-        console.log(res);
-        queryClient.invalidateQueries(['todo']);
-      }
-    },
-  });
+export const useDeleteTodoQuery = ({ options, todoId, errorHandler }: IDeleteTodoQuery) => {
+  return useMutation(() => deleteTodoAPI(todoId, errorHandler), options);
 };

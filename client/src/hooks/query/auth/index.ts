@@ -7,13 +7,9 @@ import { useAppDispatch } from '@src/hooks/useDispatch';
 import { loggedInAction } from '@src/reducers/userSlice';
 import { AxiosError } from 'axios';
 import { USER_TOKEN } from '@src/constants';
+import type { IUserQueryParams } from '@src/types/userAuthTypes';
 
-interface IQueryParams {
-  userInfo: IUserInfo;
-  errorHandler: (message: string) => void;
-}
-
-export const useLoginQuery = ({ userInfo, errorHandler }: IQueryParams) => {
+export const useLoginQuery = ({ userInfo, errorHandler }: IUserQueryParams) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -30,7 +26,7 @@ export const useLoginQuery = ({ userInfo, errorHandler }: IQueryParams) => {
   });
 };
 
-export const useSignUpQuery = ({ userInfo, errorHandler }: IQueryParams) => {
+export const useSignUpQuery = ({ userInfo, errorHandler }: IUserQueryParams) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const router = useRouter();

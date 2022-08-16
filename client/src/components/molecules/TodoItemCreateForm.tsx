@@ -6,8 +6,10 @@ import InputForm from './InputForm';
 import type { ITodoItem } from '@src/types/todoTypes';
 import { useCreateTodoQuery } from '@src/hooks/query/todo';
 import useToast from '@src/hooks/useToast';
+import { useQueryClient } from '@tanstack/react-query';
 
 const TodoItemCreateForm = ({ ...props }) => {
+  const queryClient = useQueryClient();
   const toast = useToast();
   const [todo, setTodo] = useState<ITodoItem>();
 
@@ -21,6 +23,12 @@ const TodoItemCreateForm = ({ ...props }) => {
   });
 
   const { mutate: onTodoItemCreate } = useCreateTodoQuery({
+    options: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(['todoList']);
+        toast.success('등록 성공');
+      },
+    },
     todo: todo,
     errorHandler: (message: string) => toast.error(message),
   });
@@ -31,7 +39,7 @@ const TodoItemCreateForm = ({ ...props }) => {
 
   useEffect(() => {
     if (todo) {
-      onTodoItemCreate();
+      onTodoItemCreate(todo);
       reset({ title: '', content: '' });
     }
   }, [todo]);

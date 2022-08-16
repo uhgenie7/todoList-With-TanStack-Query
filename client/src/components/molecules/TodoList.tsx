@@ -14,8 +14,6 @@ const TodoList = () => {
     errorHandler: (message: string) => toast.error(message),
   });
 
-  console.log(freshTodos);
-
   return (
     <div>
       <h2>할일 목록</h2>
