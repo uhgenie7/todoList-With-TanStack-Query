@@ -4,16 +4,15 @@ import Button from '../atoms/Button';
 import Input from '../atoms/Input';
 import { ITodoData } from '@src/types/todoTypes';
 import styled from 'styled-components';
-import TodoById from '@src/components/molecules/TodoById';
-import { Suspense } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 import useToast from '@src/hooks/useToast';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const toast = useToast();
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const { query } = useRouter();
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
 
@@ -54,12 +53,24 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const handleReadOnly = () => setReadOnly(true);
 
   const { mutate: onTodoItemUpdate } = useUpdateTodoQuery({
+    options: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(['todoList']);
+        toast.success('수정 성공');
+      },
+    },
     todoId: id,
     todo: todo,
     errorHandler: (message: string) => toast.error(message),
   });
 
   const { mutate: onTodoItemDelete } = useDeleteTodoQuery({
+    options: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(['todoList']);
+        toast.success('삭제 성공');
+      },
+    },
     todoId: id,
     errorHandler: (message: string) => toast.error(message),
   });
@@ -113,11 +124,6 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
         <p>최초 생성일: {createdDate}</p>
         <p>수정일: {updatedDate}</p>
       </Container>
-      {id === query.id && (
-        <Suspense fallback={<div>loading</div>}>
-          <TodoById />
-        </Suspense>
-      )}
     </>
   );
 };

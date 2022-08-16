@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient, UseMutationOptions } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getTodoListAPI, getTodoByIdAPI, createTodoAPI, updateTodoAPI, deleteTodoAPI } from '@src/apis/todos';
 import type { IErrorHandler } from '@src/types/error';
 import type {
