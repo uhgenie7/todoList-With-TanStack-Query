@@ -1,4 +1,5 @@
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import CustomError from '@src/utils/customError';
 
 type RenderFallbackProps<ErrorType extends Error = Error> = {
   error: ErrorType;
@@ -32,9 +33,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     return { error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error) {
     // You can also log the error to an error reporting service
-    console.log(error, errorInfo);
+    if (error instanceof CustomError) {
+      error.activateHandler();
+    }
   }
 
   // error fallback에 전달할 reset handler
