@@ -7,10 +7,10 @@ import styled from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
-import useToast from '@src/hooks/useToast';
+import customToast from '@src/utils/customToast';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
-  const toast = useToast();
+  const toast = customToast();
   const queryClient = useQueryClient();
   const router = useRouter();
   const createdDate = useDate(createdAt);

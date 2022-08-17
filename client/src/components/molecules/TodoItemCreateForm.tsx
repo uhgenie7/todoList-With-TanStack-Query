@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import InputForm from './InputForm';
 import type { ITodoItem } from '@src/types/todoTypes';
 import { useCreateTodoQuery } from '@src/hooks/query/todo';
-import useToast from '@src/hooks/useToast';
+import customToast from '@src/utils/customToast';
 import { useQueryClient } from '@tanstack/react-query';
 
 const TodoItemCreateForm = ({ ...props }) => {
   const queryClient = useQueryClient();
-  const toast = useToast();
+  const toast = customToast();
   const [todo, setTodo] = useState<ITodoItem>();
 
   const {

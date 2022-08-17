@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useGetTodoByIdQuery } from '@src/hooks/query/todo';
-import useToast from '@src/hooks/useToast';
+import customToast from '@src/utils/customToast';
 import styled from 'styled-components';
 
 const TodoById = () => {
-  const toast = useToast();
+  const toast = customToast();
   const router = useRouter();
   const id = router.query.id;
 

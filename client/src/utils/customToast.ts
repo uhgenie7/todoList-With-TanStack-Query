@@ -1,6 +1,6 @@
 import { toast, ToastPosition } from 'react-toastify';
 
-const useToast = () => {
+const customToast = () => {
   const option = {
     position: 'top-center' as ToastPosition,
     autoClose: 1000,
@@ -22,4 +22,4 @@ const useToast = () => {
   return { success, error };
 };
 
-export default useToast;
+export default customToast;

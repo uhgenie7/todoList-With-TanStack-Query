@@ -3,10 +3,10 @@
 import TodoItem from './TodoItem';
 // import { getTodoListAPI } from '@src/apis/todos';
 import { useGetTodoListQuery } from '@src/hooks/query/todo';
-import useToast from '@src/hooks/useToast';
+import customToast from '@src/utils/customToast';
 
 const TodoList = () => {
-  const toast = useToast();
+  const toast = customToast();
 
   const {
     data: { data: freshTodos },
