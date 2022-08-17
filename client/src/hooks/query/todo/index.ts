@@ -2,16 +2,14 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { getTodoListAPI, getTodoByIdAPI, createTodoAPI, updateTodoAPI, deleteTodoAPI } from '@src/apis/todos';
 import type { IErrorHandler } from '@src/types/error';
 import type {
-  ITodoItem,
   ICreateTodoQuery,
   IUpdateTodoQuery,
   IDeleteTodoQuery,
   IGetTodoByIdQueryParams,
 } from '@src/types/todoTypes';
-import { ITodoListResponse } from '@src/types/response';
 
 export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
-  return useQuery<any, Error, ITodoListResponse>(['todoList'], () => getTodoListAPI(errorHandler));
+  return useQuery(['todoList'], () => getTodoListAPI(errorHandler));
 };
 
 export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryParams) => {
