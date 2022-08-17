@@ -3,11 +3,11 @@ import { IErrorResponse } from '@src/types/response';
 import { ISSERVER } from '@src/constants';
 
 export const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 export const instanceAuth: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     Authorization: !ISSERVER && `Bearer ${localStorage.getItem('USER_TOKEN')}`,
   },
