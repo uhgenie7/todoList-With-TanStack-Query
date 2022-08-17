@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const TodoById = () => {
   const toast = customToast();
   const router = useRouter();
-  const id = router.query.id;
+  const id = router.query.id + '';
 
   const { data: detailTodos, refetch } = useGetTodoByIdQuery({
     todoId: id,
