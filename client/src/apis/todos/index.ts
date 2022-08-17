@@ -6,7 +6,7 @@ import CustomError from '@src/utils/customError';
 export const getTodoListAPI = async (errorHandler: (message: string) => void) => {
   try {
     const { data } = await instanceAuth.get<ITodoListResponse>('/todos');
-    return data;
+    return data.data;
   } catch (error) {
     if (typeof error === 'string') {
       throw new CustomError(error, errorHandler);

@@ -8,9 +8,10 @@ import type {
   IDeleteTodoQuery,
   IGetTodoByIdQueryParams,
 } from '@src/types/todoTypes';
+import { ITodoListResponse } from '@src/types/response';
 
 export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
-  return useQuery(['todoList'], () => getTodoListAPI(errorHandler));
+  return useQuery<any, Error, ITodoListResponse>(['todoList'], () => getTodoListAPI(errorHandler));
 };
 
 export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryParams) => {
@@ -18,11 +19,11 @@ export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryP
 };
 
 export const useCreateTodoQuery = ({ options, todo, errorHandler }: ICreateTodoQuery) => {
-  return useMutation<any, Error, ITodoItem>(() => createTodoAPI(todo, errorHandler), options);
+  return useMutation(() => createTodoAPI(todo, errorHandler), options);
 };
 
 export const useUpdateTodoQuery = ({ options, todoId, todo, errorHandler }: IUpdateTodoQuery) => {
-  return useMutation<any, Error, ITodoItem>(() => updateTodoAPI(todoId, todo, errorHandler), options);
+  return useMutation(() => updateTodoAPI(todoId, todo, errorHandler), options);
 };
 
 export const useDeleteTodoQuery = ({ options, todoId, errorHandler }: IDeleteTodoQuery) => {

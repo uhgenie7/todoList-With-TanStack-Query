@@ -8,11 +8,11 @@ import customToast from '@src/utils/customToast';
 const TodoList = () => {
   const toast = customToast();
 
-  const {
-    data: { data: freshTodos },
-  } = useGetTodoListQuery({
+  const { data: freshTodos } = useGetTodoListQuery({
     errorHandler: (message: string) => toast.error(message),
   });
+
+  console.log(freshTodos);
 
   return (
     <div>
