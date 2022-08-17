@@ -20,9 +20,3 @@ export interface ITodoItemResponse {
 export interface ITodoListResponse {
   data: ITodoData[];
 }
-
-export interface IResponse<T> {
-  code: string;
-  message: string;
-  result: T;
-}
