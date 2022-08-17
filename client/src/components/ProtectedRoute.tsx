@@ -3,8 +3,14 @@ import ROUTES from '@src/constants/routes';
 import { ISSERVER } from '@src/constants';
 import PageLoader from './atoms/PageLoader';
 import { useAppSelector } from '@src/hooks/useSelector';
+import { NextRouter } from 'next/router';
 
-const ProtectedRoute = ({ router, children }) => {
+interface IProtectedRoute {
+  router: NextRouter;
+  children: JSX.Element;
+}
+
+const ProtectedRoute = ({ router, children }: IProtectedRoute) => {
   const isAuthenticated = useAppSelector((state) => state.user.isLoggedIn);
 
   console.log(isAuthenticated);
