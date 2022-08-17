@@ -77,12 +77,15 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
 
   const CheckReallyDeleteTodoItem = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {
-      onTodoItemDelete();
+      onTodoItemDelete(id);
     }
   };
 
   const handleTodoUpdate = async () => {
-    onTodoItemUpdate();
+    onTodoItemUpdate({
+      todoId: id,
+      todo: todo,
+    });
     handleReadOnly();
   };
 

@@ -29,7 +29,7 @@ const TodoItemCreateForm = ({ ...props }) => {
         toast.success('등록 성공');
       },
     },
-    todo: todo,
+    todo: todo!,
     errorHandler: (message: string) => toast.error(message),
   });
 
