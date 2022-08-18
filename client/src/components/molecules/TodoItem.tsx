@@ -1,4 +1,4 @@
-import { useState, useCallback, ChangeEvent } from 'react';
+import { useState, useCallback, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
@@ -15,6 +15,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const router = useRouter();
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
+  const inputFocus = useRef<HTMLInputElement>(null);
 
   const [isReadOnly, setIsReadOnly] = useState(true);
 
@@ -101,6 +102,10 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
     setIsReadOnly(true);
   };
 
+  const onFocusNextInput = () => {
+    inputFocus?.current?.focus();
+  };
+
   return (
     <Container>
       <div className="card" onClick={handleTodoById}>
@@ -111,9 +116,11 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
           onChange={onChangeTodoTitle}
           isReadOnly={isReadOnly}
           maxLength={10}
+          onKeyDown={onFocusNextInput}
         />
         <div className="row">
           <InputWrapper
+            ref={inputFocus}
             isTitle={false}
             placeholder="내용을 입력해주세요"
             value={oldContent}
