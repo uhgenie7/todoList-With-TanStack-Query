@@ -14,11 +14,8 @@ interface IProtectedRoute {
 const ProtectedRoute = ({ router, children }: IProtectedRoute) => {
   const toast = customToast();
   const isAuthenticated = useAppSelector((state) => state.user.isLoggedIn);
-
-  console.log(isAuthenticated);
   const publicedRoutes = [ROUTES.AUTH.LOGIN, ROUTES.AUTH.SIGNUP];
   const pathIsProtected = publicedRoutes.indexOf(router.pathname) === -1;
-  console.log(pathIsProtected);
 
   useEffect(() => {
     if (!ISSERVER && !isAuthenticated && pathIsProtected) {
