@@ -16,7 +16,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
 
-  const [readOnly, setReadOnly] = useState(true);
+  const [isReadOnly, setIsReadOnly] = useState(true);
 
   const [todo, setTodo] = useState({
     title: title,
@@ -46,11 +46,11 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   );
 
   const handleTodoById = useCallback(() => {
-    readOnly && router.push(`/${id}`, undefined, { scroll: false });
-  }, [readOnly, router]);
+    isReadOnly && router.push(`/${id}`, undefined, { scroll: false });
+  }, [isReadOnly, router]);
 
-  const handleModiActive = () => setReadOnly(false);
-  const handleReadOnly = () => setReadOnly(true);
+  const handleModiActive = () => setIsReadOnly(false);
+  const handleReadOnly = () => setIsReadOnly(true);
 
   const { mutate: onTodoItemUpdate } = useUpdateTodoQuery({
     options: {
@@ -94,7 +94,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
       title: title,
       content: content,
     });
-    setReadOnly(true);
+    setIsReadOnly(true);
   };
 
   return (
@@ -105,7 +105,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
           placeholder="제목을 입력해주세요"
           value={oldTitle}
           onChange={onChangeTodoTitle}
-          readOnly={readOnly}
+          isReadOnly={isReadOnly}
         />
         <div className="row">
           <InputWrapper
@@ -113,7 +113,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
             placeholder="내용을 입력해주세요"
             value={oldContent}
             onChange={onChangeTodoContent}
-            readOnly={readOnly}
+            isReadOnly={isReadOnly}
           />
         </div>
 
@@ -123,11 +123,11 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
       <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
         삭제
       </ButtonWrapper>
-      <ButtonWrapper isDanger={false} isCorrect={true} onClick={readOnly ? handleModiActive : handleTodoUpdate}>
-        {readOnly ? '수정' : '제출'}
+      <ButtonWrapper isDanger={false} isCorrect={true} onClick={isReadOnly ? handleModiActive : handleTodoUpdate}>
+        {isReadOnly ? '수정' : '제출'}
       </ButtonWrapper>
 
-      {!readOnly && (
+      {!isReadOnly && (
         <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
           취소
         </ButtonWrapper>
@@ -165,13 +165,13 @@ const ButtonWrapper = styled(Button)<{ isDanger: boolean }>`
   margin-right: 4px;
 `;
 
-const InputWrapper = styled(Input)<{ readOnly: boolean; isTitle: boolean }>`
+const InputWrapper = styled(Input)<{ isReadOnly: boolean; isTitle: boolean }>`
   width: 300px;
   margin-right: 10px;
   margin-bottom: 4px;
-  cursor: ${({ readOnly }) => (readOnly ? 'pointer' : 'text')};
-  background: ${({ readOnly }) => (readOnly ? 'white' : 'var(--mainOpacity)')};
-  border: ${({ readOnly }) => (readOnly ? 'none' : '1px solid var(--main)')};
+  cursor: ${({ isReadOnly }) => (isReadOnly ? 'pointer' : 'text')};
+  background: ${({ isReadOnly }) => (isReadOnly ? 'white' : 'var(--mainOpacity)')};
+  border: ${({ isReadOnly }) => (isReadOnly ? 'none' : '1px solid var(--main)')};
   font-size: ${({ isTitle }) => (isTitle ? '1.5rem' : '1rem')};
   font-weight: ${({ isTitle }) => (isTitle ? 'bold' : 'normal')};
 `;
