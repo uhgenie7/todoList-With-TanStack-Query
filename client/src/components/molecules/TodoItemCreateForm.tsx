@@ -7,6 +7,7 @@ import { useCreateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
 import { useQueryClient } from '@tanstack/react-query';
 import { onEnterEvent } from '@src/utils/onEnterEvent';
+import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 
 const TodoItemCreateForm = ({ ...props }) => {
   const queryClient = useQueryClient();
@@ -42,7 +43,7 @@ const TodoItemCreateForm = ({ ...props }) => {
   const { mutate: onTodoItemCreate } = useCreateTodoQuery({
     options: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(['todoList']);
+        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
         toast.success('등록 성공');
       },
     },

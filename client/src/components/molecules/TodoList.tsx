@@ -1,7 +1,4 @@
-// import { QueryClient, dehydrate } from '@tanstack/react-query';
-// import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import TodoItem from './TodoItem';
-// import { getTodoListAPI } from '@src/apis/todos';
 import { useGetTodoListQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
 import styled from 'styled-components';
@@ -12,8 +9,6 @@ const TodoList = () => {
   const { data: freshTodos } = useGetTodoListQuery({
     errorHandler: (message: string) => toast.error(message),
   });
-
-  console.log(freshTodos);
 
   return (
     <Container>

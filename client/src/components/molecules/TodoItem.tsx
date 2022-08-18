@@ -9,6 +9,7 @@ import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
 import { onEnterEvent } from '@src/utils/onEnterEvent';
+import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const toast = customToast();
@@ -57,7 +58,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const { mutate: onTodoItemUpdate } = useUpdateTodoQuery({
     options: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(['todoList']);
+        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
         toast.success('수정 성공');
       },
     },
@@ -69,7 +70,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const { mutate: onTodoItemDelete } = useDeleteTodoQuery({
     options: {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(['todoList']);
+        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
         toast.success('삭제 성공');
       },
     },

@@ -7,13 +7,14 @@ import type {
   IDeleteTodoQuery,
   IGetTodoByIdQueryParams,
 } from '@src/types/todoTypes';
+import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 
 export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
-  return useQuery(['todoList'], () => getTodoListAPI(errorHandler));
+  return useQuery(QueryTodoKeys.todoList, () => getTodoListAPI(errorHandler));
 };
 
 export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryParams) => {
-  return useQuery(['todo'], () => getTodoByIdAPI(todoId, errorHandler));
+  return useQuery(QueryTodoKeys.todo, () => getTodoByIdAPI(todoId, errorHandler));
 };
 
 export const useCreateTodoQuery = ({ options, todo, errorHandler }: ICreateTodoQuery) => {
