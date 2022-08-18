@@ -22,9 +22,17 @@ const ProtectedRoute = ({ router, children }: IProtectedRoute) => {
     if (!ISSERVER && !isAuthenticated && pathIsProtected) {
       router.push(ROUTES.AUTH.LOGIN);
     }
+
+    if (!ISSERVER && isAuthenticated && !pathIsProtected) {
+      router.push(ROUTES.TODO);
+    }
   }, [isAuthenticated, pathIsProtected, router]);
 
   if (!ISSERVER && !isAuthenticated && pathIsProtected) {
+    return <PageLoader />;
+  }
+
+  if (!ISSERVER && isAuthenticated && !pathIsProtected) {
     return <PageLoader />;
   }
 
