@@ -46,8 +46,8 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   );
 
   const handleTodoById = useCallback(() => {
-    router.push(`/${id}`, undefined, { scroll: false });
-  }, [router]);
+    readOnly && router.push(`/${id}`, undefined, { scroll: false });
+  }, [readOnly, router]);
 
   const handleModiActive = () => setReadOnly(false);
   const handleReadOnly = () => setReadOnly(true);
@@ -115,22 +115,23 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
             onChange={onChangeTodoContent}
             readOnly={readOnly}
           />
-          <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
-            삭제
-          </ButtonWrapper>
-          <ButtonWrapper isDanger={false} isCorrect={true} onClick={readOnly ? handleModiActive : handleTodoUpdate}>
-            {readOnly ? '수정' : '제출'}
-          </ButtonWrapper>
-
-          {!readOnly && (
-            <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
-              취소
-            </ButtonWrapper>
-          )}
         </div>
+
         <p>최초 생성일: {createdDate}</p>
         <p>수정일: {updatedDate}</p>
       </Container>
+      <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
+        삭제
+      </ButtonWrapper>
+      <ButtonWrapper isDanger={false} isCorrect={true} onClick={readOnly ? handleModiActive : handleTodoUpdate}>
+        {readOnly ? '수정' : '제출'}
+      </ButtonWrapper>
+
+      {!readOnly && (
+        <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
+          취소
+        </ButtonWrapper>
+      )}
     </>
   );
 };
