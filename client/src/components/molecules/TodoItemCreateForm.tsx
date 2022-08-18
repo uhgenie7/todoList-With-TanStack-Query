@@ -1,5 +1,4 @@
-import { useState, useRef, useCallback, useEffect, createRef, ChangeEvent } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState, useRef, useCallback, ChangeEvent } from 'react';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import InputForm from './InputForm';
@@ -7,6 +6,7 @@ import type { ITodoItem } from '@src/types/todoTypes';
 import { useCreateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
 import { useQueryClient } from '@tanstack/react-query';
+import { onEnterEvent } from '@src/utils/onEnterEvent';
 
 const TodoItemCreateForm = ({ ...props }) => {
   const queryClient = useQueryClient();
@@ -50,18 +50,7 @@ const TodoItemCreateForm = ({ ...props }) => {
     errorHandler: (message: string) => toast.error(message),
   });
 
-  // const onSubmit: SubmitHandler<ITodoItem> = (todo: ITodoItem) => {
-  //   setTodo(todo);
-  // };
-
-  // useEffect(() => {
-  //   if (todo) {
-  //     onTodoItemCreate(todo);
-  //     reset({ title: '', content: '' });
-  //   }
-  // }, [todo]);
-
-  const onSubmitCreateForm = () => {
+  const handleSubmitCreateForm = () => {
     if (!!title && !!content) {
       onTodoItemCreate(todo);
       setTodo((prev) => {
@@ -69,18 +58,6 @@ const TodoItemCreateForm = ({ ...props }) => {
       });
     } else {
       toast.error('할일을 입력하고 제출해주세요!');
-    }
-  };
-
-  const onFocusNextInput = (e) => {
-    if (e.keyCode === 13) {
-      inputFocus?.current?.focus();
-    }
-  };
-
-  const onEnterSubmit = (e) => {
-    if (e.keyCode === 13) {
-      onSubmitCreateForm();
     }
   };
 
@@ -93,7 +70,7 @@ const TodoItemCreateForm = ({ ...props }) => {
         value={title}
         onChange={onChangeTodoTitle}
         maxLength={10}
-        onKeyDown={onFocusNextInput}
+        onKeyDown={(e) => onEnterEvent(e, () => inputFocus?.current?.focus())}
       />
       <InputWrapper
         ref={inputFocus}
@@ -102,9 +79,9 @@ const TodoItemCreateForm = ({ ...props }) => {
         placeholder="내용을 입력해주세요"
         value={content}
         onChange={onChangeTodoContent}
-        onKeyDown={onEnterSubmit}
+        onKeyDown={(e) => onEnterEvent(e, () => handleSubmitCreateForm())}
       />
-      <ButtonWrapper isCorrect={!!title && !!content} onClick={onSubmitCreateForm} {...props}>
+      <ButtonWrapper isCorrect={!!title && !!content} onClick={handleSubmitCreateForm} {...props}>
         추가
       </ButtonWrapper>
     </Container>

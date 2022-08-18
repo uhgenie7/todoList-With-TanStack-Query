@@ -8,6 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
+import { onEnterEvent } from '@src/utils/onEnterEvent';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const toast = customToast();
@@ -102,12 +103,6 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
     setIsReadOnly(true);
   };
 
-  const onFocusNextInput = (e) => {
-    if (e.keyCode === 13) {
-      inputFocus?.current?.focus();
-    }
-  };
-
   return (
     <Container>
       <div className="card" onClick={handleTodoById}>
@@ -118,7 +113,7 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
           onChange={onChangeTodoTitle}
           isReadOnly={isReadOnly}
           maxLength={10}
-          onKeyDown={onFocusNextInput}
+          onKeyDown={(e) => onEnterEvent(e, () => inputFocus?.current?.focus())}
         />
         <div className="row">
           <InputWrapper

@@ -1,12 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { ChangeEvent } from 'react';
 import InputForm from '../molecules/InputForm';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
 import { IFormProps } from '@src/types/userAuthTypes';
 import customToast from '@src/utils/customToast';
+import { onEnterEvent } from '@src/utils/onEnterEvent';
 
 const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
+  const inputFocus = useRef<HTMLInputElement>(null);
   const toast = customToast();
   const [email, setEmail] = useState('');
   const [isEmail, setIsEmail] = useState<null | boolean>(null);
@@ -53,6 +55,14 @@ const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
     errorHandler: (message: string) => toast.error(message),
   });
 
+  const handleSubmitAuthForm = () => {
+    if (isCorrect && !!email && !!password) {
+      onSubmit();
+      setEmail('');
+      setPassword('');
+    }
+  };
+
   return (
     <Container>
       <div>
@@ -66,10 +76,12 @@ const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
             type="email"
             isError={!isEmail && isEmail !== null}
             errorMessage={'이메일 형식을 확인해주세요'}
+            onKeyDown={(e) => onEnterEvent(e, () => inputFocus?.current?.focus())}
           />
         </div>
         <div className="inputWrapper">
           <InputForm
+            ref={inputFocus}
             labelFor="password"
             labelValue="패스워드"
             placeholder="패스워드를 입력해주세요"
@@ -78,9 +90,10 @@ const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
             type="password"
             isError={!isPassword && isPassword !== null}
             errorMessage={'8자리 이상 입력해주세요'}
+            onKeyDown={(e) => onEnterEvent(e, () => handleSubmitAuthForm())}
           />
         </div>
-        <ButtonWrapper isCorrect={isCorrect} onClick={onSubmit}>
+        <ButtonWrapper isCorrect={isCorrect} onClick={handleSubmitAuthForm}>
           {buttonValue}
         </ButtonWrapper>
       </div>
