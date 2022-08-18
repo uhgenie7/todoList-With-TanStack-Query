@@ -2,15 +2,13 @@ import styled from 'styled-components';
 import { ButtonHTMLAttributes } from 'react';
 
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onClick?: () => void;
-  buttonValue: string;
   isCorrect: boolean;
 }
 
-const Button = ({ buttonValue, isCorrect, onClick, ...props }: IProps) => {
+const Button = ({ isCorrect, children, ...props }: IProps): JSX.Element => {
   return (
-    <ButtonWrapper isCorrect={isCorrect} onClick={onClick} {...props}>
-      {buttonValue}
+    <ButtonWrapper isCorrect={isCorrect} {...props}>
+      {children}
     </ButtonWrapper>
   );
 };

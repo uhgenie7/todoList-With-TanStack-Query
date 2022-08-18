@@ -115,14 +115,18 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
             onChange={onChangeTodoContent}
             readOnly={readOnly}
           />
-          <ButtonWrapper isDanger={true} buttonValue="삭제" isCorrect={true} onClick={CheckReallyDeleteTodoItem} />
-          <ButtonWrapper
-            isDanger={false}
-            buttonValue={readOnly ? '수정' : '제출'}
-            isCorrect={true}
-            onClick={readOnly ? handleModiActive : handleTodoUpdate}
-          />
-          {!readOnly && <ButtonWrapper isDanger={false} buttonValue="취소" isCorrect={true} onClick={cancelTodo} />}
+          <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
+            삭제
+          </ButtonWrapper>
+          <ButtonWrapper isDanger={false} isCorrect={true} onClick={readOnly ? handleModiActive : handleTodoUpdate}>
+            {readOnly ? '수정' : '제출'}
+          </ButtonWrapper>
+
+          {!readOnly && (
+            <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
+              취소
+            </ButtonWrapper>
+          )}
         </div>
         <p>최초 생성일: {createdDate}</p>
         <p>수정일: {updatedDate}</p>

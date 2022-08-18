@@ -80,7 +80,9 @@ const AuthForm = ({ buttonValue, useQuery }: IFormProps) => {
             errorMessage={'8자리 이상 입력해주세요'}
           />
         </div>
-        <ButtonWrapper isCorrect={isCorrect} buttonValue={buttonValue} onClick={onSubmit} />
+        <ButtonWrapper isCorrect={isCorrect} onClick={onSubmit}>
+          {buttonValue}
+        </ButtonWrapper>
       </div>
     </Container>
   );

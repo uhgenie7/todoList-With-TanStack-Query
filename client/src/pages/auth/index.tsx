@@ -10,7 +10,9 @@ const Auth = () => {
   return (
     <Container>
       <LoginPage />
-      <Button isCorrect={true} buttonValue="회원가입" onClick={handleNavigateSignUp} />
+      <Button isCorrect={true} onClick={handleNavigateSignUp}>
+        회원가입
+      </Button>
     </Container>
   );
 };
