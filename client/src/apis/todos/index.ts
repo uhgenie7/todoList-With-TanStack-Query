@@ -33,7 +33,7 @@ export const createTodoAPI = async (todoItem: ITodoItem, errorHandler: (message:
   try {
     const { data } = await instanceAuth.post('/todos', todoItem);
     return data;
-  } catch (error: any) {
+  } catch (error) {
     if (typeof error === 'string') {
       throw new CustomError(error, errorHandler);
     } else {
