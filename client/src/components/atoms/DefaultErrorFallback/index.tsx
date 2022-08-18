@@ -1,9 +1,22 @@
-const DefaultErrorFallback = ({ reset }: { reset: any }) => {
+import styled from 'styled-components';
+import Button from '../Button';
+
+interface IProps {
+  reset?: () => void;
+}
+
+const DefaultErrorFallback = ({ reset }: IProps) => {
   return (
-    <div>
-      <button onClick={reset}>Try again</button>
-    </div>
+    <Container>
+      <Button isCorrect={true} onClick={reset}>
+        Try again
+      </Button>
+    </Container>
   );
 };
 
 export default DefaultErrorFallback;
+
+const Container = styled.div`
+  margin-bottom: 1rem;
+`;
