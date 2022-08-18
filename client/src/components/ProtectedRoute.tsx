@@ -4,6 +4,7 @@ import { ISSERVER } from '@src/constants';
 import PageLoader from './atoms/PageLoader';
 import { useAppSelector } from '@src/hooks/useSelector';
 import { NextRouter } from 'next/router';
+import customToast from '@src/utils/customToast';
 
 interface IProtectedRoute {
   router: NextRouter;
@@ -11,6 +12,7 @@ interface IProtectedRoute {
 }
 
 const ProtectedRoute = ({ router, children }: IProtectedRoute) => {
+  const toast = customToast();
   const isAuthenticated = useAppSelector((state) => state.user.isLoggedIn);
 
   console.log(isAuthenticated);
@@ -20,6 +22,7 @@ const ProtectedRoute = ({ router, children }: IProtectedRoute) => {
 
   useEffect(() => {
     if (!ISSERVER && !isAuthenticated && pathIsProtected) {
+      toast.error('로그인부터 해주세요');
       router.push(ROUTES.AUTH.LOGIN);
     }
 
