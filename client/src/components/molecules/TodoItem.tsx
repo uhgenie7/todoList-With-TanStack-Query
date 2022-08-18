@@ -102,8 +102,10 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
     setIsReadOnly(true);
   };
 
-  const onFocusNextInput = () => {
-    inputFocus?.current?.focus();
+  const onFocusNextInput = (e) => {
+    if (e.keyCode === 13) {
+      inputFocus?.current?.focus();
+    }
   };
 
   return (

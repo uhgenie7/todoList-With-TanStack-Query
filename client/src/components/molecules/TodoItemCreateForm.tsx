@@ -72,8 +72,16 @@ const TodoItemCreateForm = ({ ...props }) => {
     }
   };
 
-  const onFocusNextInput = () => {
-    inputFocus?.current?.focus();
+  const onFocusNextInput = (e) => {
+    if (e.keyCode === 13) {
+      inputFocus?.current?.focus();
+    }
+  };
+
+  const onEnterSubmit = (e) => {
+    if (e.keyCode === 13) {
+      onSubmitCreateForm();
+    }
   };
 
   return (
@@ -94,7 +102,7 @@ const TodoItemCreateForm = ({ ...props }) => {
         placeholder="내용을 입력해주세요"
         value={content}
         onChange={onChangeTodoContent}
-        onKeyDown={onSubmitCreateForm}
+        onKeyDown={onEnterSubmit}
       />
       <ButtonWrapper isCorrect={!!title && !!content} onClick={onSubmitCreateForm} {...props}>
         추가
