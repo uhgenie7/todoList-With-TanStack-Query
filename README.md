@@ -24,7 +24,7 @@
 
 ```bash
 ~/workspace > cd wanted-pre-onboarding-challenge-fe-1/client/
-~/workspace/wanted-pre-onboarding-challenge-fe-1/client > yarn build && yarn start
+~/workspace/wanted-pre-onboarding-challenge-fe-1/client > yarn && yarn build && yarn start
 ```
 
 2. 서버
