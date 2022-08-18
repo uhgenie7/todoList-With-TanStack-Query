@@ -20,8 +20,11 @@ const TodoById = () => {
 
   return (
     <Container>
-      <h3>상세 제목: {detailTodos?.data?.title}</h3>
-      <p>상세 내용: {detailTodos?.data?.content}</p>
+      <div>
+        <button onClick={() => router.push('/')}>(닫기)</button>
+      </div>
+      <h3>제목: {detailTodos?.data?.title}</h3>
+      <p>내용: {detailTodos?.data?.content}</p>
     </Container>
   );
 };
@@ -29,7 +32,28 @@ const TodoById = () => {
 export default TodoById;
 
 const Container = styled.div`
-  position: fixed;
-  right: 10%;
-  background: var(--main);
+  width: 100%;
+  height: 100%;
+  background: var(--hightlight);
+  border: 1px solid var(--main2);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 1rem;
+  overflow-y: scroll;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+
+  h3,
+  p {
+    word-break: break-all;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  button {
+    float: right;
+  }
 `;
