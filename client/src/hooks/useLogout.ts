@@ -8,9 +8,11 @@ export const useLogout = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem(USER_TOKEN);
-    dispatch(loggedInAction(false));
-    router.replace('/auth');
+    if (confirm('정말 로그아웃 하시겠습니까?')) {
+      localStorage.removeItem(USER_TOKEN);
+      dispatch(loggedInAction(false));
+      router.replace('/auth');
+    }
   };
 
   return {
