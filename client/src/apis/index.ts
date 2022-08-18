@@ -18,7 +18,6 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 };
 
 const onResponseError = (error: AxiosError<IErrorResponse>): Promise<AxiosError> => {
-  console.log(error);
   const code = error.code;
 
   switch (code) {

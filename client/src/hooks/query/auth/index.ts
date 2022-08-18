@@ -8,15 +8,15 @@ import { loggedInAction } from '@src/reducers/userSlice';
 import { AxiosError } from 'axios';
 import { USER_TOKEN } from '@src/constants';
 import type { IUserQueryParams } from '@src/types/userAuthTypes';
+import type { IUserAuthResponse } from '@src/types/response';
 
 export const useLoginQuery = ({ userInfo, errorHandler }: IUserQueryParams) => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const router = useRouter();
-  return useMutation<any, AxiosError, IUserInfo>(() => loginAPI(userInfo, errorHandler), {
+  return useMutation<IUserAuthResponse, AxiosError, IUserInfo>(() => loginAPI(userInfo, errorHandler), {
     onSuccess: (res) => {
       if (res) {
-        console.log(res);
         localStorage.setItem(USER_TOKEN, res.token);
         dispatch(loggedInAction(true));
         queryClient.invalidateQueries(QueryUserAuthKeys.login);
@@ -30,10 +30,9 @@ export const useSignUpQuery = ({ userInfo, errorHandler }: IUserQueryParams) => 
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const router = useRouter();
-  return useMutation<any, AxiosError, IUserInfo>(() => signUpAPI(userInfo, errorHandler), {
+  return useMutation<IUserAuthResponse, AxiosError, IUserInfo>(() => signUpAPI(userInfo, errorHandler), {
     onSuccess: (res) => {
       if (res) {
-        console.log(res);
         localStorage.setItem(USER_TOKEN, res.token);
         dispatch(loggedInAction(true));
         queryClient.invalidateQueries(QueryUserAuthKeys.signUp);

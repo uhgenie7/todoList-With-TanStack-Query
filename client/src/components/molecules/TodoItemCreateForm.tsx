@@ -5,12 +5,9 @@ import InputForm from './InputForm';
 import type { ITodoItem } from '@src/types/todoTypes';
 import { useCreateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
-import { useQueryClient } from '@tanstack/react-query';
 import { onEnterEvent } from '@src/utils/onEnterEvent';
-import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 
 const TodoItemCreateForm = ({ ...props }) => {
-  const queryClient = useQueryClient();
   const toast = customToast();
   const inputFocus = useRef<HTMLInputElement>(null);
 
@@ -40,20 +37,15 @@ const TodoItemCreateForm = ({ ...props }) => {
     },
     [todo],
   );
+
   const { mutate: onTodoItemCreate } = useCreateTodoQuery({
-    options: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
-        toast.success('등록 성공');
-      },
-    },
-    todo: todo!,
+    todo: todo,
     errorHandler: (message: string) => toast.error(message),
   });
 
   const handleSubmitCreateForm = () => {
     if (!!title && !!content) {
-      onTodoItemCreate(todo);
+      onTodoItemCreate();
       setTodo((prev) => {
         return { ...prev, title: '', content: '' };
       });

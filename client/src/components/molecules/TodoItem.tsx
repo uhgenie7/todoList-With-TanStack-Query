@@ -4,16 +4,13 @@ import Button from '../atoms/Button';
 import Input from '../atoms/Input';
 import { ITodoData } from '@src/types/todoTypes';
 import styled from 'styled-components';
-import { useQueryClient } from '@tanstack/react-query';
 import useDate from '@src/hooks/useDate';
 import { useDeleteTodoQuery, useUpdateTodoQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
 import { onEnterEvent } from '@src/utils/onEnterEvent';
-import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 
 const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const toast = customToast();
-  const queryClient = useQueryClient();
   const router = useRouter();
   const createdDate = useDate(createdAt);
   const updatedDate = useDate(updatedAt);
@@ -56,40 +53,25 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   const handleReadOnly = () => setIsReadOnly(true);
 
   const { mutate: onTodoItemUpdate } = useUpdateTodoQuery({
-    options: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
-        toast.success('수정 성공');
-      },
-    },
     todoId: id,
     todo: todo,
     errorHandler: (message: string) => toast.error(message),
   });
 
   const { mutate: onTodoItemDelete } = useDeleteTodoQuery({
-    options: {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(QueryTodoKeys.todoList);
-        toast.success('삭제 성공');
-      },
-    },
     todoId: id,
     errorHandler: (message: string) => toast.error(message),
   });
 
   const CheckReallyDeleteTodoItem = async () => {
     if (confirm('정말 삭제하시겠습니까?')) {
-      onTodoItemDelete(id);
+      onTodoItemDelete();
     }
   };
 
   const handleTodoUpdate = async () => {
     if (!!oldTitle && !!oldContent) {
-      onTodoItemUpdate({
-        todoId: id,
-        todo: todo,
-      });
+      onTodoItemUpdate();
       handleReadOnly();
     } else {
       toast.error('할일을 입력하고 제출해주세요!');
