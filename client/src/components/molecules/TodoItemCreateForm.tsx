@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { useState, useRef, useCallback, useEffect, createRef, ChangeEvent } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Button from '@src/components/atoms/Button';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 const TodoItemCreateForm = ({ ...props }) => {
   const queryClient = useQueryClient();
   const toast = customToast();
+  const inputFocus = useRef<HTMLInputElement>(null);
 
   const [todo, setTodo] = useState<ITodoItem>({
     title: '',
@@ -60,24 +61,42 @@ const TodoItemCreateForm = ({ ...props }) => {
   //   }
   // }, [todo]);
 
+  const onSubmitCreateForm = () => {
+    if (!!title && !!content) {
+      onTodoItemCreate(todo);
+      setTodo((prev) => {
+        return { ...prev, title: '', content: '' };
+      });
+    } else {
+      toast.error('할일을 입력하고 제출해주세요!');
+    }
+  };
+
+  const onFocusNextInput = () => {
+    inputFocus?.current?.focus();
+  };
+
   return (
     <Container>
       <InputWrapper
         labelValue="제목"
         labelFor="title"
-        placeholder="제목을 입력해주세요"
+        placeholder="제목을 입력해주세요 (10자 이내)"
         value={title}
         onChange={onChangeTodoTitle}
+        maxLength={10}
+        onKeyDown={onFocusNextInput}
       />
-
       <InputWrapper
+        ref={inputFocus}
         labelValue="내용"
         labelFor="content"
         placeholder="내용을 입력해주세요"
         value={content}
         onChange={onChangeTodoContent}
+        onKeyDown={onSubmitCreateForm}
       />
-      <ButtonWrapper isCorrect={!!title && !!content} onClick={onTodoItemCreate} {...props}>
+      <ButtonWrapper isCorrect={!!title && !!content} onClick={onSubmitCreateForm} {...props}>
         추가
       </ButtonWrapper>
     </Container>
