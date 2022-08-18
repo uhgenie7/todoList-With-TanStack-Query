@@ -82,11 +82,15 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   };
 
   const handleTodoUpdate = async () => {
-    onTodoItemUpdate({
-      todoId: id,
-      todo: todo,
-    });
-    handleReadOnly();
+    if (!!oldTitle && !!oldContent) {
+      onTodoItemUpdate({
+        todoId: id,
+        todo: todo,
+      });
+      handleReadOnly();
+    } else {
+      toast.error('할일을 입력하고 제출해주세요!');
+    }
   };
 
   const cancelTodo = () => {
@@ -98,14 +102,15 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
   };
 
   return (
-    <>
-      <Container onClick={handleTodoById}>
+    <Container>
+      <div className="card" onClick={handleTodoById}>
         <InputWrapper
           isTitle={true}
           placeholder="제목을 입력해주세요"
           value={oldTitle}
           onChange={onChangeTodoTitle}
           isReadOnly={isReadOnly}
+          maxLength={10}
         />
         <div className="row">
           <InputWrapper
@@ -116,45 +121,56 @@ const TodoItem = ({ id, title, content, createdAt, updatedAt }: ITodoData) => {
             isReadOnly={isReadOnly}
           />
         </div>
-
         <p>최초 생성일: {createdDate}</p>
         <p>수정일: {updatedDate}</p>
-      </Container>
-      <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
-        삭제
-      </ButtonWrapper>
-      <ButtonWrapper isDanger={false} isCorrect={true} onClick={isReadOnly ? handleModiActive : handleTodoUpdate}>
-        {isReadOnly ? '수정' : '제출'}
-      </ButtonWrapper>
-
-      {!isReadOnly && (
-        <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
-          취소
+      </div>
+      <div className="buttonsWrapper">
+        <ButtonWrapper isDanger={true} isCorrect={true} onClick={CheckReallyDeleteTodoItem}>
+          삭제
         </ButtonWrapper>
-      )}
-    </>
+        <ButtonWrapper isDanger={false} isCorrect={true} onClick={isReadOnly ? handleModiActive : handleTodoUpdate}>
+          {isReadOnly ? '수정' : '제출'}
+        </ButtonWrapper>
+
+        {!isReadOnly && (
+          <ButtonWrapper isDanger={false} isCorrect={true} onClick={cancelTodo}>
+            취소
+          </ButtonWrapper>
+        )}
+      </div>
+    </Container>
   );
 };
 
 export default TodoItem;
 
 const Container = styled.li`
-  cursor: pointer;
-  &:hover {
-    background-color: var(--mainOpacity);
-  }
-  margin-bottom: 20px;
-  border: 1px solid var(--main2);
-  border-radius: 10px;
-  padding: 15px;
-  .row {
-    display: flex;
+  .card {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--mainOpacity);
+    }
+
+    border: 1px solid var(--main2);
+    border-radius: 10px;
+    padding: 15px;
+    .row {
+      display: flex;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
   }
 
-  h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 16px;
+  .buttonsWrapper {
+    margin: 10px 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -169,6 +185,7 @@ const InputWrapper = styled(Input)<{ isReadOnly: boolean; isTitle: boolean }>`
   width: 300px;
   margin-right: 10px;
   margin-bottom: 4px;
+  text-overflow: ellipsis;
   cursor: ${({ isReadOnly }) => (isReadOnly ? 'pointer' : 'text')};
   background: ${({ isReadOnly }) => (isReadOnly ? 'white' : 'var(--mainOpacity)')};
   border: ${({ isReadOnly }) => (isReadOnly ? 'none' : '1px solid var(--main)')};
