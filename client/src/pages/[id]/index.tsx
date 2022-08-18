@@ -3,7 +3,6 @@ import TodosPage from '@src/components/pages/TodosPage';
 import TodoById from '@src/components/molecules/TodoById';
 import AsyncBoundary from '@src/components/boundaries/AsyncBoundary';
 import DefaultErrorFallback from '@src/components/atoms/DefaultErrorFallback';
-import PageLoader from '@src/components/atoms/PageLoader';
 import styled from 'styled-components';
 
 const TodoDetail = () => {
@@ -17,7 +16,7 @@ const TodoDetail = () => {
         <>
           <TodosPage />
           <div className="todoByIdSection">
-            <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
+            <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<SkeletonTodoById />}>
               <TodoById />
             </AsyncBoundary>
           </div>
@@ -38,4 +37,10 @@ const Container = styled.div`
     top: 50%;
     transform: translateY(-50%);
   }
+`;
+
+const SkeletonTodoById = styled.div`
+  width: 300px;
+  height: 500px;
+  background-color: rgba(255, 255, 255, 0.2);
 `;
