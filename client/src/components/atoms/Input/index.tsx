@@ -15,6 +15,7 @@ const Input = React.forwardRef(({ labelFor, ...props }: IProps, ref?: ForwardedR
 export default Input;
 
 const Container = styled.input`
+  width: 100%;
   padding: 0.5rem;
   outline: none;
   border: 1px solid var(--main);

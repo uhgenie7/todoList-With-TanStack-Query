@@ -11,9 +11,9 @@ const Header = () => {
     <HeaderWrapper>
       <div>
         {isAuthenticated ? (
-          <Button isCorrect={true} onClick={logoutAction.handleLogout}>
+          <LogoutButton isCorrect={true} onClick={logoutAction.handleLogout}>
             로그아웃
-          </Button>
+          </LogoutButton>
         ) : (
           <h1>어서오세요</h1>
         )}
@@ -25,5 +25,15 @@ const Header = () => {
 export default Header;
 
 const HeaderWrapper = styled.header`
+  width: 100%;
   margin-bottom: 2rem;
+
+  h1 {
+    text-align: center;
+    padding: 1rem;
+  }
+`;
+
+const LogoutButton = styled(Button)`
+  width: 100%;
 `;

@@ -22,4 +22,8 @@ const ButtonWrapper = styled.button<{ isCorrect: boolean }>`
   padding: 1rem;
   background: ${({ isCorrect }) => (isCorrect ? 'var(--main)' : 'var(--snow)')};
   color: ${({ isCorrect }) => (isCorrect ? 'black' : 'black')};
+  &:hover {
+    box-shadow: ${({ isCorrect }) =>
+      isCorrect ? 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px' : '0'};
+  }
 `;

@@ -16,9 +16,11 @@ const TodoDetail = () => {
       {id && (
         <>
           <TodosPage />
-          <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
-            <TodoById />
-          </AsyncBoundary>
+          <div className="todoByIdSection">
+            <AsyncBoundary rejectedFallback={DefaultErrorFallback} pendingFallback={<PageLoader />}>
+              <TodoById />
+            </AsyncBoundary>
+          </div>
         </>
       )}
     </Container>
@@ -28,5 +30,12 @@ const TodoDetail = () => {
 export default TodoDetail;
 
 const Container = styled.div`
-  display: flex;
+  .todoByIdSection {
+    width: 300px;
+    height: 500px;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;

@@ -17,7 +17,9 @@ const AppLayout = ({ children }: IProps) => {
       </Head>
       <ToastContainer />
       <Container>
-        <Header />
+        <div className="headerWrapper">
+          <Header />
+        </div>
         {children}
       </Container>
     </>
@@ -32,4 +34,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-top: 5rem;
+
+  .headerWrapper {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
 `;

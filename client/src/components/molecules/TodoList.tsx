@@ -4,6 +4,7 @@ import TodoItem from './TodoItem';
 // import { getTodoListAPI } from '@src/apis/todos';
 import { useGetTodoListQuery } from '@src/hooks/query/todo';
 import customToast from '@src/utils/customToast';
+import styled from 'styled-components';
 
 const TodoList = () => {
   const toast = customToast();
@@ -15,7 +16,7 @@ const TodoList = () => {
   console.log(freshTodos);
 
   return (
-    <div>
+    <Container>
       <h2>할일 목록</h2>
       <ul className="messages">
         {freshTodos &&
@@ -25,11 +26,18 @@ const TodoList = () => {
               <TodoItem id={id} key={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
             ))}
       </ul>
-    </div>
+    </Container>
   );
 };
 
 export default TodoList;
+
+const Container = styled.div`
+  ul {
+    height: 500px;
+    overflow-y: scroll;
+  }
+`;
 
 // export async function getStaticProps() {
 //   const queryClient = new QueryClient();
