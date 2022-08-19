@@ -9,6 +9,8 @@ import type {
 } from '@src/types/todoTypes';
 import { QueryTodoKeys } from '@src/constants/QueryTodoKeys';
 import customToast from '@src/utils/customToast';
+import { useRouter } from 'next/router';
+
 const toast = customToast();
 
 export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
@@ -16,7 +18,7 @@ export const useGetTodoListQuery = ({ errorHandler }: IErrorHandler) => {
 };
 
 export const useGetTodoByIdQuery = ({ todoId, errorHandler }: IGetTodoByIdQueryParams) => {
-  return useQuery(QueryTodoKeys.todo, () => getTodoByIdAPI(todoId, errorHandler));
+  return useQuery(QueryTodoKeys.todo(todoId), () => getTodoByIdAPI(todoId, errorHandler));
 };
 
 export const useCreateTodoQuery = ({ todo, errorHandler }: ICreateTodoQuery) => {
@@ -45,10 +47,14 @@ export const useUpdateTodoQuery = ({ todoId, todo, errorHandler }: IUpdateTodoQu
 
 export const useDeleteTodoQuery = ({ todoId, errorHandler }: IDeleteTodoQuery) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   return useMutation(() => deleteTodoAPI(todoId, errorHandler), {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(QueryTodoKeys.todoList);
-      toast.success('삭제 성공');
+    onSuccess: (res) => {
+      if (res) {
+        toast.success('삭제 성공');
+        router.replace('/');
+        queryClient.invalidateQueries(QueryTodoKeys.todoList);
+      }
     },
   });
 };
