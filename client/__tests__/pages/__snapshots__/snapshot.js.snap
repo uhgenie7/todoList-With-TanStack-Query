@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders homepage unchanged 1`] = `
+<div>
+  <main>
+    <h1>
+      test jest
+    </h1>
+    <p>
+      ggg
+    </p>
+  </main>
+</div>
+`;
