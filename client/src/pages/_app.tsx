@@ -10,6 +10,10 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
+if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
+  import('../mocks');
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const persistor = persistStore(store);
