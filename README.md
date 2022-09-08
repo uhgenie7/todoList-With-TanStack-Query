@@ -1,4 +1,4 @@
-# TodoList
+# TodoList with TanStack Query
 <img src="https://user-images.githubusercontent.com/72803184/185449755-24306942-5aef-4241-a76b-ae7a9cc9c0c3.gif"/>
 <p align="center">
   <img src="https://img.shields.io/badge/TypeScript-323330?style=flat-square&logo=TypeScript&logoColor=#3178C6" height="24" />
